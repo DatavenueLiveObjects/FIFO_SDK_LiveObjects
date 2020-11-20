@@ -1,0 +1,33 @@
+name: Manual CD
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Create tag by maven-release plugin
+        uses: qcastel/github-actions-maven-release@v1.12.2
+        with:
+          release-branch-name: "main"
+          git-release-bot-name: "bot"
+          git-release-bot-email: "grzegorz.swistak2@gmail.com"
+          skip-perform: true
+          access-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Get the last tag name to set as version
+        id: get_version
+        run: echo ::set-output name=VERSION::$(git describe --tags $(git rev-list --tags --max-count=1))
+
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
+        with:
+          tag_name: ${{ steps.get_version.outputs.VERSION }}
+          release_name: Release ${{ steps.get_version.outputs.VERSION }}
