@@ -13,8 +13,8 @@ jobs:
         uses: qcastel/github-actions-maven-release@v1.12.2
         with:
           release-branch-name: "main"
-          git-release-bot-name: "bot"
-          git-release-bot-email: "grzegorz.swistak2@gmail.com"
+          git-release-bot-name: "auto"
+          git-release-bot-email: "auto@orange.com"
           skip-perform: true
           access-token: ${{ secrets.GITHUB_TOKEN }}
 
