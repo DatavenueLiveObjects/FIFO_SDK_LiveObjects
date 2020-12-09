@@ -7,7 +7,8 @@
 
 package com.orange.lo.sdk;
 
-import com.orange.lo.sdk.mqtt.DataManagementMqtt;
+import com.orange.lo.sdk.externalconnector.DataManagementExtConnector;
+import com.orange.lo.sdk.fifomqtt.DataManagementFifo;
 import com.orange.lo.sdk.mqtt.MqttClientFactory;
 import com.orange.lo.sdk.mqtt.MqttClientFactoryImpl;
 import com.orange.lo.sdk.rest.devicemanagement.DeviceManagement;
@@ -15,19 +16,25 @@ import com.orange.lo.sdk.rest.devicemanagement.DeviceManagement;
 public class LOApiClient {
 
     private DeviceManagement deviceManagement;
-    private DataManagementMqtt dataManagementMqtt;
+    private DataManagementFifo dataManagementFifo;
+    private DataManagementExtConnector dataManagementExtConnector;
 
     public LOApiClient(LOApiClientParameters parameters) {
         this.deviceManagement = new DeviceManagement(parameters);
         MqttClientFactory mqttClientFactory = new MqttClientFactoryImpl(parameters.getHostname());
-        this.dataManagementMqtt = new DataManagementMqtt(parameters, mqttClientFactory);
+        this.dataManagementFifo = new DataManagementFifo(parameters, mqttClientFactory);
+        this.dataManagementExtConnector = new DataManagementExtConnector(parameters, mqttClientFactory);
     }
 
     public DeviceManagement getDeviceManagement() {
         return deviceManagement;
     }
 
-    public DataManagementMqtt getDataManagementMqtt() {
-        return dataManagementMqtt;
+    public DataManagementFifo getDataManagementFifo() {
+        return dataManagementFifo;
+    }
+
+    public DataManagementExtConnector getDataManagementExtConnector() {
+        return dataManagementExtConnector;
     }
 }

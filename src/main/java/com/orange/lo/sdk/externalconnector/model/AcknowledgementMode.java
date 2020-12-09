@@ -5,8 +5,10 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-package com.orange.lo.sdk.mqtt;
+package com.orange.lo.sdk.externalconnector.model;
 
-public interface DataManagementMqttCallback {
-    void onMessage(String message);
+public enum AcknowledgementMode {
+    NONE,
+    NETWORK,
+    APPLICATIVE;
 }

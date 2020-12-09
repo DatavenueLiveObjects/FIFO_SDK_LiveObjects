@@ -1,6 +1,7 @@
 package com.orange.lo.sdk;
 
-import com.orange.lo.sdk.mqtt.DataManagementMqtt;
+import com.orange.lo.sdk.externalconnector.DataManagementExtConnector;
+import com.orange.lo.sdk.fifomqtt.DataManagementFifo;
 import com.orange.lo.sdk.rest.devicemanagement.DeviceManagement;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -27,8 +28,14 @@ class LOApiClientTest {
     }
 
     @Test
-    void shouldCorrectlyCreateDataManagementMqtt() {
-        DataManagementMqtt dataManagementMqtt = loApiClient.getDataManagementMqtt();
-        assertNotNull(dataManagementMqtt);
+    void shouldCorrectlyCreateDataManagementFifo() {
+        DataManagementFifo dataManagementFifo = loApiClient.getDataManagementFifo();
+        assertNotNull(dataManagementFifo);
+    }
+
+    @Test
+    void shouldCorrectlyCreateDataManagementExtConnector() {
+        DataManagementExtConnector dataManagementFifo = loApiClient.getDataManagementExtConnector();
+        assertNotNull(dataManagementFifo);
     }
 }

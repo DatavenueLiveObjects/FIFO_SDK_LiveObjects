@@ -7,7 +7,8 @@
 
 package com.orange.lo.sdk;
 
-import com.orange.lo.sdk.mqtt.DataManagementMqttCallback;
+import com.orange.lo.sdk.externalconnector.DataManagementExtConnectorCommandCallback;
+import com.orange.lo.sdk.fifomqtt.DataManagementFifoCallback;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,27 +20,44 @@ public final class LOApiClientParameters {
     public static final int DEFAULT_MESSAGE_QOS = 1;
     public static final int DEFAULT_KEEP_ALIVE_INTERVAL = 0;
     public static final int DEFAULT_CONNECTION_TIMEOUT = 30000;
+    public static final String DEFAULT_EXT_CONNECTOR_USER = "connector";
+    public static final String DEFAULT_EXT_CONNECTOR_COMMAND_REQUEST_TOPIC = "connector/v1/requests/command";
+    public static final String DEFAULT_EXT_CONNECTOR_COMMAND_RESPONSE_TOPIC = "connector/v1/responses/command";
+    public static final String DEFAULT_EXT_CONNECTOR_DATA_TOPIC_TEMPLATE = "connector/v1/nodes/%s/data";
+    public static final String DEFAULT_EXT_CONNECTOR_STATUS_TOPIC_TEMPLATE = "connector/v1/nodes/%s/status";
 
     private final String apiKey;
     private final String hostname;
     private final String username;
+    private final String extConnectorUsername;
     private final int messageQos;
     private final boolean automaticReconnect;
     private final int keepAliveIntervalSeconds;
     private final int connectionTimeout;
     private final List<String> topics;
-    private final DataManagementMqttCallback dataManagementMqttCallback;
+    private final DataManagementFifoCallback dataManagementFifoCallback;
+    private final DataManagementExtConnectorCommandCallback dataManagementExtConnectorCommandCallback;
+    private final String extConnectorCommandRequestTopic;
+    private final String extConnectorCommandResponseTopic;
+    private final String extConnectorStatusTopicTemplate;
+    private final String extConnectorDataTopicTemplate;
 
     private LOApiClientParameters(LOApiClientParametersBuilder builder) {
         this.apiKey = builder.apiKey;
         this.hostname = builder.hostname;
         this.username = builder.username;
+        this.extConnectorUsername = builder.extConnectorUsername;
         this.messageQos = builder.messageQos;
         this.automaticReconnect = builder.automaticReconnect;
         this.keepAliveIntervalSeconds = builder.keepAliveIntervalSeconds;
         this.connectionTimeout = builder.connectionTimeout;
         this.topics = builder.topics;
-        this.dataManagementMqttCallback = builder.dataManagementMqttCallback;
+        this.dataManagementFifoCallback = builder.dataManagementFifoCallback;
+        this.dataManagementExtConnectorCommandCallback = builder.dataManagementExtConnectorCommandCallback;
+        this.extConnectorCommandRequestTopic = builder.extConnectorCommandRequestTopic;
+        this.extConnectorCommandResponseTopic = builder.extConnectorCommandResponseTopic;
+        this.extConnectorStatusTopicTemplate = builder.extConnectorStatusTopicTemplate;
+        this.extConnectorDataTopicTemplate = builder.extConnectorDataTopicTemplate;
     }
 
     public String getApiKey() {
@@ -52,6 +70,10 @@ public final class LOApiClientParameters {
 
     public String getUsername() {
         return username;
+    }
+
+    public String getExtConnectorUsername() {
+        return extConnectorUsername;
     }
 
     public int getMessageQos() {
@@ -74,8 +96,28 @@ public final class LOApiClientParameters {
         return topics;
     }
 
-    public DataManagementMqttCallback getDataManagementMqttCallback() {
-        return dataManagementMqttCallback;
+    public DataManagementFifoCallback getDataManagementFifoCallback() {
+        return dataManagementFifoCallback;
+    }
+
+    public DataManagementExtConnectorCommandCallback getDataManagementExtConnectorCommandCallback() {
+        return dataManagementExtConnectorCommandCallback;
+    }
+
+    public String getExtConnectorCommandResponseTopic() {
+        return extConnectorCommandResponseTopic;
+    }
+
+    public String getExtConnectorStatusTopicTemplate() {
+        return extConnectorStatusTopicTemplate;
+    }
+
+    public String getExtConnectorCommandRequestTopic() {
+        return extConnectorCommandRequestTopic;
+    }
+
+    public String getExtConnectorDataTopicTemplate() {
+        return extConnectorDataTopicTemplate;
     }
 
     public static LOApiClientParametersBuilder builder() {
@@ -87,12 +129,18 @@ public final class LOApiClientParameters {
         private String apiKey;
         private String hostname = DEFAULT_HOSTNAME;
         private String username = DEFAULT_USERNAME;
+        private String extConnectorUsername = DEFAULT_EXT_CONNECTOR_USER;
         private int messageQos = DEFAULT_MESSAGE_QOS;
         private boolean automaticReconnect;
         private int keepAliveIntervalSeconds = DEFAULT_KEEP_ALIVE_INTERVAL;
         private int connectionTimeout = DEFAULT_CONNECTION_TIMEOUT;
         private List<String> topics = new ArrayList<>();
-        private DataManagementMqttCallback dataManagementMqttCallback;
+        private DataManagementFifoCallback dataManagementFifoCallback;
+        private DataManagementExtConnectorCommandCallback dataManagementExtConnectorCommandCallback;
+        private String extConnectorCommandRequestTopic = DEFAULT_EXT_CONNECTOR_COMMAND_REQUEST_TOPIC;
+        private String extConnectorCommandResponseTopic = DEFAULT_EXT_CONNECTOR_COMMAND_RESPONSE_TOPIC;
+        private String extConnectorStatusTopicTemplate = DEFAULT_EXT_CONNECTOR_STATUS_TOPIC_TEMPLATE;
+        private String extConnectorDataTopicTemplate = DEFAULT_EXT_CONNECTOR_DATA_TOPIC_TEMPLATE;
 
         public LOApiClientParametersBuilder apiKey(String apiKey) {
             this.apiKey = apiKey;
@@ -106,6 +154,11 @@ public final class LOApiClientParameters {
 
         public LOApiClientParametersBuilder username(String username) {
             this.username = username;
+            return this;
+        }
+
+        public LOApiClientParametersBuilder extConnectorUsername(String extUsername) {
+            this.extConnectorUsername = extUsername;
             return this;
         }
 
@@ -134,8 +187,34 @@ public final class LOApiClientParameters {
             return this;
         }
 
-        public LOApiClientParametersBuilder dataManagementMqttCallback(DataManagementMqttCallback dataManagementMqttCallback) {
-            this.dataManagementMqttCallback = dataManagementMqttCallback;
+        public LOApiClientParametersBuilder dataManagementMqttCallback(DataManagementFifoCallback dataManagementFifoCallback) {
+            this.dataManagementFifoCallback = dataManagementFifoCallback;
+            return this;
+        }
+
+        public LOApiClientParametersBuilder dataManagementExtConnectorCommandCallback(
+                DataManagementExtConnectorCommandCallback dataManagementExtConnectorCommandCallback) {
+            this.dataManagementExtConnectorCommandCallback = dataManagementExtConnectorCommandCallback;
+            return this;
+        }
+
+        public LOApiClientParametersBuilder extConnectorCommandRequestTopic(String extConnectorCommandRequestTopic) {
+            this.extConnectorCommandRequestTopic = extConnectorCommandRequestTopic;
+            return this;
+        }
+
+        public LOApiClientParametersBuilder extConnectorCommandResponseTopic(String extConnectorCommandResponseTopic) {
+            this.extConnectorCommandResponseTopic = extConnectorCommandResponseTopic;
+            return this;
+        }
+
+        public LOApiClientParametersBuilder extConnectorStatusTopicTemplate(String extConnectorStatusTopicTemplate) {
+            this.extConnectorStatusTopicTemplate = extConnectorStatusTopicTemplate;
+            return this;
+        }
+
+        public LOApiClientParametersBuilder extConnectorDataTopicTemplate(String extConnectorDataTopicTemplate) {
+            this.extConnectorDataTopicTemplate = extConnectorDataTopicTemplate;
             return this;
         }
 
@@ -148,7 +227,7 @@ public final class LOApiClientParameters {
             if (this.apiKey == null || this.apiKey.trim().length() == 0 || this.hostname == null || this.hostname.trim().length() == 0) {
                 throw new IllegalArgumentException("Api key and hostname are required");
             }
-            if ((!topics.isEmpty() && dataManagementMqttCallback == null) || (topics.isEmpty() && dataManagementMqttCallback != null)) {
+            if ((!topics.isEmpty() && dataManagementFifoCallback == null) || (topics.isEmpty() && dataManagementFifoCallback != null)) {
                 throw new IllegalArgumentException("Topics and DataManagementMqttCallback must be set simultaneously");
             }
         }
