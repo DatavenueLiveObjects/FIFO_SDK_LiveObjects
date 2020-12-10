@@ -87,7 +87,7 @@ List<Group> groupsList = groups.getGroups(getGroupsFilter);
 
 In order to receive all messages from your queue, you should implement your own message handling class implementing `DataManagementMqttCallback`:
 ```java
-public class MyDataManagementMqttCallback implements DataManagementMqttCallback {
+public class MyDataManagementFifoCallback implements DataManagementFifoCallback {
     @Override
     public void onMessage(String message) {
 
@@ -100,17 +100,77 @@ List<String> queuesList = Arrays.asList("queue-1", "queue-2", "queue-n");
 LOApiClientParameters parameters = LOApiClientParameters.builder()
         .apiKey("abcDEfgH123I")
         .topics(queuesList)
-        .dataManagementMqttCallback(new MyDataManagementMqttCallback())
+        .dataManagementFifoCallback(new MyDataManagementFifoCallback())
         .build();
 LOApiClient client = new LOApiClient(parameters);
 ```
 To start retrieving message, you should use subscribe method:
 ```java
-DataManagementMqtt dataManagementMqtt = client.getDataManagementMqtt();
-dataManagementMqtt.subscribe();
+DataManagementFifo dataManagementFifo = client.getDataManagementFifo);
+dataManagementFifo.subscribe();
 ```
 
 To stop retrieving messages, you should use disconnect method:
 ```java
-dataManagementMqtt.disconnect();
+dataManagementFifo.disconnect();
+```
+
+#### External connector mode connection
+`LOApiClient` allows to create the external connector mode connection with Live Objects.
+
+You can use the sample code to open the connection:
+```java
+DataManagementExtConnector dataManagementExtConnector = client.getDataManagementExtConnector();
+dataManagementExtConnector.connect();
+```
+
+NodeStatus publication allows to set the ONLINE/OFFLINE status of the device and its capacity to receive or not command requests. To send the NodeStatus to Live Objects, you can use the sample code:
+```
+NodeStatus nodeStatus = new NodeStatus();
+nodeStatus.setStatus(Status.ONLINE);
+nodeStatus.setCapabilities(new NodeStatus.Capabilities(true));
+dataManagementExtConnector.sendStatus(exConnectorNodeId, nodeStatus);
+```
+
+DataMessage publication allows to send a DataMessage on behalf of a specific device. To send DataMessage to Live Objects, you can use the sample code:
+```
+Value payload = new Value("payload value");
+DataMessage dataMessage = new DataMessage();
+dataMessage.setValue(payload);
+dataManagementExtConnector.sendMessage(exConnectorNodeId, dataMessage);
+```
+The data messages sent to the Live Objects platform can be encoded in a customer specific format. For instance, the payload may be a string containing an hexadecimal value or a csv value. In order to use the decoding capability of LiveObjects, a DataMessage must contains additional `value.payload` and `metadata.encoding` fields. To send encoded DataMessage to Live Objects, you can use the sample code:
+```
+Value value = new Value("15;25");
+Metadata metadata = new Metadata("test_csv");
+DataMessage dataMessage = new DataMessage();
+dataMessage.setValue(value);
+dataMessage.setMetadata(metadata);
+dataManagementExtConnector.sendMessage(exConnectorNodeId, dataMessage);
+```
+For more information on decoding, see the [user guide](https://liveobjects.orange-business.com/doc/html/lo_manual_v2.html#DEC).
+
+In order to receive all command requests targeting your devices, you should implement your own message handling class implementing `DataManagementExtConnectorCommandCallback`:
+```
+public class MyDataManagementExtConnectorCommandCallback implements DataManagementExtConnectorCommandCallback {
+    @Override
+    public Object onCommandRequest(CommandRequest commandRequest) {
+        return null;
+    }
+}
+```
+If acknowledgement mode isn't set to `NONE`, a command response with the request’s id will be published automatically. Object returned by `onMessage` method will be used as value of response field inside command response. If you want the response field to be blank, return `null`.
+
+Use that prepared `DataManagementExtConnectorCommandCallback` to create an `LOApiClient`:
+```
+LOApiClientParameters parameters = LOApiClientParameters.builder()
+        .apiKey("abcDEfgH123I")
+        .dataManagementExtConnectorCommandCallback(new MyDataManagementExtConnectorCommandCallback())
+        .build();
+LOApiClient client = new LOApiClient(parameters);
+```
+
+To close the connection, you should use disconnect method:
+```
+dataManagementExtConnector.disconnect();
 ```

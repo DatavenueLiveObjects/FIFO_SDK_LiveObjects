@@ -5,6 +5,10 @@ import org.junit.jupiter.api.Test;
 import java.util.Arrays;
 import java.util.List;
 
+import static com.orange.lo.sdk.LOApiClientParameters.DEFAULT_EXT_CONNECTOR_COMMAND_REQUEST_TOPIC;
+import static com.orange.lo.sdk.LOApiClientParameters.DEFAULT_EXT_CONNECTOR_COMMAND_RESPONSE_TOPIC;
+import static com.orange.lo.sdk.LOApiClientParameters.DEFAULT_EXT_CONNECTOR_DATA_TOPIC_TEMPLATE;
+import static com.orange.lo.sdk.LOApiClientParameters.DEFAULT_EXT_CONNECTOR_STATUS_TOPIC_TEMPLATE;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -154,7 +158,117 @@ class LOApiClientParametersTest {
                 .dataManagementMqttCallback(System.out::println)
                 .build();
 
-        assertNotNull(parameters.getDataManagementMqttCallback());
+        assertNotNull(parameters.getDataManagementFifoCallback());
+    }
+
+    @Test
+    void shouldSetDefaultExtConnectorUsernameWhenUsernameWasNotSet() {
+        LOApiClientParameters parameters = LOApiClientParameters.builder()
+                .apiKey(API_KEY)
+                .build();
+
+        assertEquals(LOApiClientParameters.DEFAULT_EXT_CONNECTOR_USER, parameters.getExtConnectorUsername());
+    }
+
+    @Test
+    void shouldChangeExtConnectorUsernameWhenUsernameWasSet() {
+        String username = "newExtUsername";
+        LOApiClientParameters parameters = LOApiClientParameters.builder()
+                .apiKey(API_KEY)
+                .extConnectorUsername(username)
+                .build();
+
+        assertEquals(username, parameters.getExtConnectorUsername());
+    }
+
+    @Test
+    void shouldSetDataManagementExtConnectorCommandCallback() {
+        LOApiClientParameters parameters = LOApiClientParameters.builder()
+                .apiKey(API_KEY)
+                .dataManagementExtConnectorCommandCallback((commandRequest) -> null)
+                .build();
+
+        assertNotNull(parameters.getDataManagementExtConnectorCommandCallback());
+    }
+
+    @Test
+    void shouldSetDefaultCommandResponseTopicWhenCommandResponseTopicWasNotSet() {
+        LOApiClientParameters parameters = LOApiClientParameters.builder()
+                .apiKey(API_KEY)
+                .build();
+
+        assertEquals(DEFAULT_EXT_CONNECTOR_COMMAND_RESPONSE_TOPIC, parameters.getExtConnectorCommandResponseTopic());
+    }
+
+    @Test
+    void shouldChangeDefaultExtConnectorCommandRequestTopicWhenCommandResponseTopicWasSet() {
+        String commandResponseTopic = "new/command/response/topic";
+        LOApiClientParameters parameters = LOApiClientParameters.builder()
+                .apiKey(API_KEY)
+                .extConnectorCommandResponseTopic(commandResponseTopic)
+                .build();
+
+        assertEquals(commandResponseTopic, parameters.getExtConnectorCommandResponseTopic());
+    }
+
+    @Test
+    void shouldSetDefaultExtConnectorCommandRequestTopicWhenCommandRequestTopicWasNotSet() {
+        LOApiClientParameters parameters = LOApiClientParameters.builder()
+                .apiKey(API_KEY)
+                .build();
+
+        assertEquals(DEFAULT_EXT_CONNECTOR_COMMAND_REQUEST_TOPIC, parameters.getExtConnectorCommandRequestTopic());
+    }
+
+    @Test
+    void shouldChangeDefaultExtConnectorCommandRequestTopicWhenCommandRequestTopicWasSet() {
+        String commandRequestTopic = "new/command/request/topic";
+        LOApiClientParameters parameters = LOApiClientParameters.builder()
+                .apiKey(API_KEY)
+                .extConnectorCommandRequestTopic(commandRequestTopic)
+                .build();
+
+        assertEquals(commandRequestTopic, parameters.getExtConnectorCommandRequestTopic());
+    }
+
+    @Test
+    void shouldSetDefaultExtConnectorStatusTopicTemplateWhenStatusTopicTemplateWasNotSet() {
+        LOApiClientParameters parameters = LOApiClientParameters.builder()
+                .apiKey(API_KEY)
+                .build();
+
+        assertEquals(DEFAULT_EXT_CONNECTOR_STATUS_TOPIC_TEMPLATE, parameters.getExtConnectorStatusTopicTemplate());
+    }
+
+    @Test
+    void shouldChangeDefaultExtConnectorStatusTopicTemplateWhenStatusTopicTemplateWasSet() {
+        String statusTopicTemplate = "/%s/new/status/topic/template";
+        LOApiClientParameters parameters = LOApiClientParameters.builder()
+                .apiKey(API_KEY)
+                .extConnectorStatusTopicTemplate(statusTopicTemplate)
+                .build();
+
+        assertEquals(statusTopicTemplate, parameters.getExtConnectorStatusTopicTemplate());
+    }
+
+    @Test
+    void shouldSetDefaultDataTopicTemplateWhenDataTopicTemplateWasNotSet() {
+        LOApiClientParameters parameters = LOApiClientParameters.builder()
+                .apiKey(API_KEY)
+                .build();
+
+        assertEquals(DEFAULT_EXT_CONNECTOR_DATA_TOPIC_TEMPLATE, parameters.getExtConnectorDataTopicTemplate());
+    }
+
+    @Test
+    void shouldChangeDefaultDataTopicTemplateWhenDataTopicTemplateWasSet() {
+        String dataTopicTemplate = "/%s/new/data/topic/template";
+        LOApiClientParameters parameters = LOApiClientParameters.builder()
+                .apiKey(API_KEY)
+                .extConnectorDataTopicTemplate(dataTopicTemplate)
+                .build();
+
+        assertEquals(dataTopicTemplate, parameters.getExtConnectorDataTopicTemplate());
     }
 
     @Test
@@ -176,7 +290,6 @@ class LOApiClientParametersTest {
         IllegalArgumentException illegalArgumentException = assertThrows(IllegalArgumentException.class, builder::build);
         assertEquals("Topics and DataManagementMqttCallback must be set simultaneously", illegalArgumentException.getMessage());
     }
-
 
     @Test
     void shouldThrowIllegalArgumentExceptionWhenApiKeyIsNotSet() {

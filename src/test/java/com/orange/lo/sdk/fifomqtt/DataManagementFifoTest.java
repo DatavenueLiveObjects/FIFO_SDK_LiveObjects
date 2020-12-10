@@ -1,4 +1,4 @@
-package com.orange.lo.sdk.mqtt;
+package com.orange.lo.sdk.fifomqtt;
 
 import com.orange.lo.sdk.LOApiClientParameters;
 import org.eclipse.paho.client.mqttv3.IMqttClient;
@@ -18,13 +18,13 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
-class DataManagementMqttTest {
+class DataManagementFifoTest {
 
     private static final String API_KEY = "abcDEfgH123I";
 
     @Mock
     private IMqttClient mqttClient;
-    private DataManagementMqtt dataManagementMqtt;
+    private DataManagementFifo dataManagementFifo;
 
     @BeforeEach
     void setUp() {
@@ -33,19 +33,19 @@ class DataManagementMqttTest {
                 .topics(Arrays.asList("topic-01", "topic-02"))
                 .dataManagementMqttCallback(System.out::println)
                 .build();
-        this.dataManagementMqtt = new DataManagementMqtt(parameters, () -> mqttClient);
+        this.dataManagementFifo = new DataManagementFifo(parameters, () -> mqttClient);
     }
 
     @Test
     void shouldCallMqttClientWhenDisconnect() throws MqttException {
-        dataManagementMqtt.disconnect();
+        dataManagementFifo.disconnect();
 
         verify(mqttClient, times(1)).disconnect();
     }
 
     @Test
     void shouldCallMqttClientWhenSubscribe() throws MqttException {
-        dataManagementMqtt.subscribe();
+        dataManagementFifo.subscribe();
 
         verify(mqttClient, times(1)).connect(any(MqttConnectOptions.class));
         verify(mqttClient, times(1)).subscribe(any(String[].class), any(int[].class), any(IMqttMessageListener[].class));
