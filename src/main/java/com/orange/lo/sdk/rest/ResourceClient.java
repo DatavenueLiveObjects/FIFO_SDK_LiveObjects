@@ -7,12 +7,12 @@
 
 package com.orange.lo.sdk.rest;
 
+import java.util.List;
+
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
-
-import java.util.List;
 
 public abstract class ResourceClient {
 
@@ -27,10 +27,8 @@ public abstract class ResourceClient {
         return exchange.getBody();
     }
 
-    protected <T> List<T> getMany(String uri) {
-        ParameterizedTypeReference<List<T>> parameterizedTypeReference = new ParameterizedTypeReference<List<T>>() {
-        };
-        ResponseEntity<List<T>> exchange = restTemplate.exchange(uri, HttpMethod.GET, null, parameterizedTypeReference);
+    protected <T> List<T> getMany(String uri, ParameterizedTypeReference<List<T>> typeRef) {
+        ResponseEntity<List<T>> exchange = restTemplate.exchange(uri, HttpMethod.GET, null, typeRef);
         return exchange.getBody();
     }
 }

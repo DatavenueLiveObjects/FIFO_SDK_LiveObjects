@@ -11,6 +11,8 @@ import com.orange.lo.sdk.rest.FilterUtils;
 import com.orange.lo.sdk.rest.RestTemplateFactory;
 import com.orange.lo.sdk.rest.ResourceClient;
 import com.orange.lo.sdk.rest.model.Device;
+
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.List;
@@ -29,12 +31,17 @@ public class Inventory extends ResourceClient {
         return get(uri, Device.class);
     }
 
+    public List<Device> getDevices() {
+        return getDevices(new GetDevicesFilter());
+    }
+    
     public List<Device> getDevices(GetDevicesFilter getDevicesFilter) {
 
         String uri = UriComponentsBuilder.fromUriString(DEVICES_ENDPOINT) //
                 .queryParams(FilterUtils.toMap(getDevicesFilter)) //
                 .build().toUriString(); //
 
-        return getMany(uri);
+        ParameterizedTypeReference<List<Device>> typeRef = new ParameterizedTypeReference<List<Device>>() {};
+        return getMany(uri, typeRef);
     }
 }

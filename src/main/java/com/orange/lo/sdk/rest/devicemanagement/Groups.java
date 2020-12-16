@@ -7,13 +7,15 @@
 
 package com.orange.lo.sdk.rest.devicemanagement;
 
-import com.orange.lo.sdk.rest.FilterUtils;
-import com.orange.lo.sdk.rest.RestTemplateFactory;
-import com.orange.lo.sdk.rest.ResourceClient;
-import com.orange.lo.sdk.rest.model.Group;
+import java.util.List;
+
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import java.util.List;
+import com.orange.lo.sdk.rest.FilterUtils;
+import com.orange.lo.sdk.rest.ResourceClient;
+import com.orange.lo.sdk.rest.RestTemplateFactory;
+import com.orange.lo.sdk.rest.model.Group;
 
 public class Groups extends ResourceClient {
 
@@ -29,12 +31,17 @@ public class Groups extends ResourceClient {
         return get(uri, Group.class);
     }
 
+    public List<Group> getGroups() {
+    	return getGroups(new GetGroupsFilter());
+    }
+
     public List<Group> getGroups(GetGroupsFilter getGroupsFilter) {
 
         String uri = UriComponentsBuilder.fromUriString(GROUPS_ENDPOINT) //
                 .queryParams(FilterUtils.toMap(getGroupsFilter)) //
                 .build().toUriString(); //
 
-        return getMany(uri);
+        ParameterizedTypeReference<List<Group>> typeRef = new ParameterizedTypeReference<List<Group>>() {};
+        return getMany(uri, typeRef);
     }
 }
