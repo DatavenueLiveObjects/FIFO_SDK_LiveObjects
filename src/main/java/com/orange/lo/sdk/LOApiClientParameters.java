@@ -18,7 +18,7 @@ public final class LOApiClientParameters {
     public static final String DEFAULT_HOSTNAME = "liveobjects.orange-business.com";
     public static final String DEFAULT_USERNAME = "application";
     public static final int DEFAULT_MESSAGE_QOS = 1;
-    public static final int DEFAULT_KEEP_ALIVE_INTERVAL = 0;
+    public static final int DEFAULT_KEEP_ALIVE_INTERVAL = 60;
     public static final int DEFAULT_CONNECTION_TIMEOUT = 30000;
     public static final String DEFAULT_EXT_CONNECTOR_USER = "connector";
     public static final String DEFAULT_EXT_CONNECTOR_COMMAND_REQUEST_TOPIC = "connector/v1/requests/command";
