@@ -7,7 +7,9 @@
 
 package com.orange.lo.sdk.rest.devicemanagement;
 
-public final class GetDevicesFilter {
+import com.orange.lo.sdk.rest.Filter;
+
+public final class GetDevicesFilter implements Filter{
 
     private Integer limit;
     private Integer offset;

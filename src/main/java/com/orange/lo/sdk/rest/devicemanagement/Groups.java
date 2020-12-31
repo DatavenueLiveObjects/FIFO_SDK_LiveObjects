@@ -21,7 +21,8 @@ public class Groups extends ResourceClient {
 
     private static final String GROUP_ENDPOINT = "/v1/deviceMgt/groups/{id}";
     private static final String GROUPS_ENDPOINT = "/v1/deviceMgt/groups";
-
+    public static final String DEFAULT_GROUP_ID = "root";
+    
     public Groups(RestTemplateFactory restTemplateFactory) {
         super(restTemplateFactory);
     }

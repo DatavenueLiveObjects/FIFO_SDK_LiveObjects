@@ -10,6 +10,7 @@ package com.orange.lo.sdk.rest;
 import java.util.List;
 
 import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
@@ -31,4 +32,13 @@ public abstract class ResourceClient {
         ResponseEntity<List<T>> exchange = restTemplate.exchange(uri, HttpMethod.GET, null, typeRef);
         return exchange.getBody();
     }
+    
+    protected void delete(String uri) {
+    	restTemplate.exchange(uri, HttpMethod.DELETE, null, Void.class);
+	}
+    
+    protected <T> T create(String uri, T body, Class<T> responseType) {
+    	ResponseEntity<T> exchange = restTemplate.exchange(uri, HttpMethod.POST, new HttpEntity<T>(body), responseType);
+		return exchange.getBody();
+	}
 }

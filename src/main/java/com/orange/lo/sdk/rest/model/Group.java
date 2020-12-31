@@ -34,7 +34,42 @@ public class Group {
     @JsonProperty("updated")
     private String updated;
 
-    public String getId() {
+    public Group withId(String id) {
+		this.id = id;
+		return this;
+	}
+
+	public Group withPathNode(String pathNode) {
+		this.pathNode = pathNode;
+		return this;
+	}
+
+	public Group withPath(String path) {
+		this.path = path;
+		return this;
+	}
+
+	public Group withParentId(String parentId) {
+		this.parentId = parentId;
+		return this;
+	}
+
+	public Group withDescription(String description) {
+		this.description = description;
+		return this;
+	}
+
+	public Group withCreated(String created) {
+		this.created = created;
+		return this;
+	}
+
+	public Group withUpdated(String updated) {
+		this.updated = updated;
+		return this;
+	}
+
+	public String getId() {
         return id;
     }
 

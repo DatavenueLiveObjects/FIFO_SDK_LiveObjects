@@ -7,7 +7,9 @@
 
 package com.orange.lo.sdk.rest.devicemanagement;
 
-public final class GetGroupsFilter {
+import com.orange.lo.sdk.rest.Filter;
+
+public final class GetGroupsFilter implements Filter{
 
     private Integer limit;
     private Integer offset;

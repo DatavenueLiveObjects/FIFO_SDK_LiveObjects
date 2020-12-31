@@ -23,9 +23,9 @@ public class FilterUtils {
     private FilterUtils() {
     }
 
-    public static MultiValueMap<String, String> toMap(Object getGroupsFilter) {
+    public static MultiValueMap<String, String> toMap(Filter filter) {
         MultiValueMap<String, String> parameters = new LinkedMultiValueMap<>();
-        Map<String, String> maps = objectMapper.convertValue(getGroupsFilter, new TypeReference<Map<String, String>>() {
+        Map<String, String> maps = objectMapper.convertValue(filter, new TypeReference<Map<String, String>>() {
         });
 
         ArrayList<String> removedKeyList = new ArrayList<>();
