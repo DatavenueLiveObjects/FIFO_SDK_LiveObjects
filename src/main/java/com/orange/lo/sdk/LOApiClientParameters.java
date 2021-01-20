@@ -19,6 +19,8 @@ public final class LOApiClientParameters {
     public static final String DEFAULT_USERNAME = "application";
     public static final int DEFAULT_MESSAGE_QOS = 1;
     public static final int DEFAULT_KEEP_ALIVE_INTERVAL = 60;
+    public static final int DEFAULT_MAX_INFLIGHT = 10;
+    public static final boolean DEFAULT_CLEAN_SESSION = true;
     public static final int DEFAULT_CONNECTION_TIMEOUT = 30000;
     public static final String DEFAULT_EXT_CONNECTOR_USER = "connector";
     public static final String DEFAULT_EXT_CONNECTOR_COMMAND_REQUEST_TOPIC = "connector/v1/requests/command";
@@ -32,7 +34,9 @@ public final class LOApiClientParameters {
     private final String extConnectorUsername;
     private final int messageQos;
     private final boolean automaticReconnect;
-    private final int keepAliveIntervalSeconds;
+    private final boolean cleanSession;
+	private final int keepAliveIntervalSeconds;
+    private final int maxInflight;
     private final int connectionTimeout;
     private final List<String> topics;
     private final DataManagementFifoCallback dataManagementFifoCallback;
@@ -49,7 +53,9 @@ public final class LOApiClientParameters {
         this.extConnectorUsername = builder.extConnectorUsername;
         this.messageQos = builder.messageQos;
         this.automaticReconnect = builder.automaticReconnect;
+        this.cleanSession = builder.cleanSession;
         this.keepAliveIntervalSeconds = builder.keepAliveIntervalSeconds;
+        this.maxInflight = builder.maxInflight;
         this.connectionTimeout = builder.connectionTimeout;
         this.topics = builder.topics;
         this.dataManagementFifoCallback = builder.dataManagementFifoCallback;
@@ -84,8 +90,16 @@ public final class LOApiClientParameters {
         return automaticReconnect;
     }
 
+    public boolean isCleanSession() {
+		return cleanSession;
+	}
+
     public int getKeepAliveIntervalSeconds() {
         return keepAliveIntervalSeconds;
+    }
+               
+    public int getMaxInflight() {
+    	return maxInflight;
     }
 
     public int getConnectionTimeout() {
@@ -126,13 +140,15 @@ public final class LOApiClientParameters {
 
     public static final class LOApiClientParametersBuilder {
 
-        private String apiKey;
+		private String apiKey;
         private String hostname = DEFAULT_HOSTNAME;
         private String username = DEFAULT_USERNAME;
         private String extConnectorUsername = DEFAULT_EXT_CONNECTOR_USER;
         private int messageQos = DEFAULT_MESSAGE_QOS;
         private boolean automaticReconnect;
+        private boolean cleanSession = DEFAULT_CLEAN_SESSION;
         private int keepAliveIntervalSeconds = DEFAULT_KEEP_ALIVE_INTERVAL;
+        private int maxInflight = DEFAULT_MAX_INFLIGHT;
         private int connectionTimeout = DEFAULT_CONNECTION_TIMEOUT;
         private List<String> topics = new ArrayList<>();
         private DataManagementFifoCallback dataManagementFifoCallback;
@@ -171,9 +187,19 @@ public final class LOApiClientParameters {
             this.automaticReconnect = automaticReconnect;
             return this;
         }
+        
+        public LOApiClientParametersBuilder cleanSession(boolean cleanSession) {
+            this.cleanSession = cleanSession;
+            return this;
+        }
 
         public LOApiClientParametersBuilder keepAliveIntervalSeconds(int keepAliveIntervalSeconds) {
             this.keepAliveIntervalSeconds = keepAliveIntervalSeconds;
+            return this;
+        }
+        
+        public LOApiClientParametersBuilder maxInflight(int maxInflight) {
+            this.maxInflight = maxInflight;
             return this;
         }
 

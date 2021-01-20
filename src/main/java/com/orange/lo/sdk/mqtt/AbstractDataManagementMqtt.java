@@ -49,6 +49,9 @@ public abstract class AbstractDataManagementMqtt {
         opts.setKeepAliveInterval(parameters.getKeepAliveIntervalSeconds());
         opts.setAutomaticReconnect(parameters.isAutomaticReconnect());
         opts.setConnectionTimeout(parameters.getConnectionTimeout());
+        opts.setCleanSession(parameters.isCleanSession());
+        opts.setMaxInflight(parameters.getMaxInflight());
+                            
         return opts;
     }
 
