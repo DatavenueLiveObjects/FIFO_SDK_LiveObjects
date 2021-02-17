@@ -22,6 +22,7 @@ public final class LOApiClientParameters {
     public static final int DEFAULT_MAX_INFLIGHT = 10;
     public static final boolean DEFAULT_CLEAN_SESSION = true;
     public static final int DEFAULT_CONNECTION_TIMEOUT = 30000;
+    public static final String DEFAULT_MQTT_PERSISTENCE_DATA_DIR = System.getProperty("user.dir"); 
     public static final String DEFAULT_EXT_CONNECTOR_USER = "connector";
     public static final String DEFAULT_EXT_CONNECTOR_COMMAND_REQUEST_TOPIC = "connector/v1/requests/command";
     public static final String DEFAULT_EXT_CONNECTOR_COMMAND_RESPONSE_TOPIC = "connector/v1/responses/command";
@@ -38,7 +39,8 @@ public final class LOApiClientParameters {
 	private final int keepAliveIntervalSeconds;
     private final int maxInflight;
     private final int connectionTimeout;
-    private final List<String> topics;
+    private final String mqttPersistenceDataDir;
+	private final List<String> topics;
     private final DataManagementFifoCallback dataManagementFifoCallback;
     private final DataManagementExtConnectorCommandCallback dataManagementExtConnectorCommandCallback;
     private final String extConnectorCommandRequestTopic;
@@ -57,6 +59,7 @@ public final class LOApiClientParameters {
         this.keepAliveIntervalSeconds = builder.keepAliveIntervalSeconds;
         this.maxInflight = builder.maxInflight;
         this.connectionTimeout = builder.connectionTimeout;
+        this.mqttPersistenceDataDir = builder.mqttPersistenceDataDir;
         this.topics = builder.topics;
         this.dataManagementFifoCallback = builder.dataManagementFifoCallback;
         this.dataManagementExtConnectorCommandCallback = builder.dataManagementExtConnectorCommandCallback;
@@ -106,6 +109,10 @@ public final class LOApiClientParameters {
         return connectionTimeout;
     }
 
+    public String getMqttPersistenceDataDir() {
+		return mqttPersistenceDataDir;
+	}
+    
     public List<String> getTopics() {
         return topics;
     }
@@ -150,6 +157,7 @@ public final class LOApiClientParameters {
         private int keepAliveIntervalSeconds = DEFAULT_KEEP_ALIVE_INTERVAL;
         private int maxInflight = DEFAULT_MAX_INFLIGHT;
         private int connectionTimeout = DEFAULT_CONNECTION_TIMEOUT;
+        private String mqttPersistenceDataDir = DEFAULT_MQTT_PERSISTENCE_DATA_DIR;
         private List<String> topics = new ArrayList<>();
         private DataManagementFifoCallback dataManagementFifoCallback;
         private DataManagementExtConnectorCommandCallback dataManagementExtConnectorCommandCallback;
@@ -207,7 +215,12 @@ public final class LOApiClientParameters {
             this.connectionTimeout = connectionTimeout;
             return this;
         }
-
+        
+        public LOApiClientParametersBuilder mqttPersistenceDataDir(String dataDir) {
+            this.mqttPersistenceDataDir = dataDir;
+            return this;
+        }
+        
         public LOApiClientParametersBuilder topics(List<String> topics) {
             this.topics = topics;
             return this;
