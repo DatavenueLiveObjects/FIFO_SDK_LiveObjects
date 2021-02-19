@@ -45,7 +45,7 @@ class DataManagementFifoTest {
 
     @Test
     void shouldCallMqttClientWhenSubscribe() throws MqttException {
-        dataManagementFifo.subscribe();
+        dataManagementFifo.connectAndSubscribe();
 
         verify(mqttClient, times(1)).connect(any(MqttConnectOptions.class));
         verify(mqttClient, times(1)).subscribe(any(String[].class), any(int[].class), any(IMqttMessageListener[].class));

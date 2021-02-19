@@ -27,7 +27,7 @@ public class DataManagementFifo extends AbstractDataManagementMqtt {
         this.callback = parameters.getDataManagementFifoCallback();
     }
 
-    public void subscribe() {
+    public void connectAndSubscribe() {
         connect();
         prepareParamsAndSubscribe();
     }
