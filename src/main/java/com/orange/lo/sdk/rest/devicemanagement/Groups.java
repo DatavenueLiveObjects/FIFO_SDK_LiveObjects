@@ -45,4 +45,19 @@ public class Groups extends ResourceClient {
         ParameterizedTypeReference<List<Group>> typeRef = new ParameterizedTypeReference<List<Group>>() {};
         return getMany(uri, typeRef);
     }
+    
+    public void deleteGroup(String groupId) {
+    	String uri = UriComponentsBuilder.fromUriString(GROUPS_ENDPOINT).pathSegment(groupId) //
+    			.build().toUriString();
+    	delete(uri);    	
+    }
+    
+    public Group createGroup(Group group) {
+    	return create(GROUPS_ENDPOINT, group, Group.class);
+    }
+    
+    public Group createGroup(String pathNode) {
+    	Group group = new Group().withPathNode(pathNode);
+    	return create(GROUPS_ENDPOINT, group, Group.class);
+    }
 }
