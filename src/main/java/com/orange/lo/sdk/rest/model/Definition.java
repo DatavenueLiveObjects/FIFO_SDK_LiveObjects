@@ -7,6 +7,8 @@
 
 package com.orange.lo.sdk.rest.model;
 
+import java.util.Objects;
+
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -29,4 +31,21 @@ public class Definition {
     public String toString() {
         return "Definition [clientId=" + clientId + "]";
     }
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(clientId);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (!(obj instanceof Definition))
+			return false;
+		Definition other = (Definition) obj;
+		return Objects.equals(clientId, other.clientId);
+	}    
 }

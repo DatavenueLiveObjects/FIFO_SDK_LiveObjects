@@ -8,6 +8,7 @@
 package com.orange.lo.sdk.rest.model;
 
 import java.util.Date;
+import java.util.Objects;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -139,4 +140,26 @@ public class Interface {
     public String toString() {
         return "Interface [connector=" + connector + ", nodeId=" + nodeId + ", enabled=" + enabled + ", status=" + status + ", definition=" + definition + ", capabilities=" + capabilities + ", created=" + created + ", updated=" + updated + ", lastContact=" + lastContact + ", activity=" + activity + "]";
     }
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(activity, capabilities, connector, created, definition, enabled, lastContact, nodeId,
+				status, updated);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (!(obj instanceof Interface))
+			return false;
+		Interface other = (Interface) obj;
+		return Objects.equals(activity, other.activity) && Objects.equals(capabilities, other.capabilities)
+				&& Objects.equals(connector, other.connector) && Objects.equals(created, other.created)
+				&& Objects.equals(definition, other.definition) && Objects.equals(enabled, other.enabled)
+				&& Objects.equals(lastContact, other.lastContact) && Objects.equals(nodeId, other.nodeId)
+				&& Objects.equals(status, other.status) && Objects.equals(updated, other.updated);
+	}
 }

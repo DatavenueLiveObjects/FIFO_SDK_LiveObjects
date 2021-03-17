@@ -7,6 +7,8 @@
 
 package com.orange.lo.sdk.rest.model;
 
+import java.util.Objects;
+
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -53,4 +55,22 @@ public class Capabilities {
     public String toString() {
         return "Capabilities [configuration=" + configuration + ", command=" + command + ", resource=" + resource + "]";
     }
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(command, configuration, resource);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (!(obj instanceof Capabilities))
+			return false;
+		Capabilities other = (Capabilities) obj;
+		return Objects.equals(command, other.command) && Objects.equals(configuration, other.configuration)
+				&& Objects.equals(resource, other.resource);
+	}
 }

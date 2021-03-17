@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -142,4 +143,26 @@ public class Device {
     public String toString() {
         return "Device [id=" + id + ", name=" + name + ", tags=" + tags + ", properties=" + properties + ", group=" + group + ", interfaces=" + interfaces + ", defaultDataStreamId=" + defaultDataStreamId + ", created=" + created + ", updated=" + updated + ", activityState=" + activityState + "]";
     }
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(activityState, created, defaultDataStreamId, group, id, interfaces, name, properties, tags,
+				updated);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (!(obj instanceof Device))
+			return false;
+		Device other = (Device) obj;
+		return Objects.equals(activityState, other.activityState) && Objects.equals(created, other.created)
+				&& Objects.equals(defaultDataStreamId, other.defaultDataStreamId) && Objects.equals(group, other.group)
+				&& Objects.equals(id, other.id) && Objects.equals(interfaces, other.interfaces)
+				&& Objects.equals(name, other.name) && Objects.equals(properties, other.properties)
+				&& Objects.equals(tags, other.tags) && Objects.equals(updated, other.updated);
+	}
 }

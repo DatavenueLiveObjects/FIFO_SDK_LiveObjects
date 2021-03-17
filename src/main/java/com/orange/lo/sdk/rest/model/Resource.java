@@ -7,6 +7,8 @@
 
 package com.orange.lo.sdk.rest.model;
 
+import java.util.Objects;
+
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -29,4 +31,21 @@ public class Resource {
     public String toString() {
         return "Resource [available=" + available + "]";
     }
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(available);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (!(obj instanceof Resource))
+			return false;
+		Resource other = (Resource) obj;
+		return Objects.equals(available, other.available);
+	}
 }

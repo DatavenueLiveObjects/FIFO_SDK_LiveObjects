@@ -7,6 +7,8 @@
 
 package com.orange.lo.sdk.rest.model;
 
+import java.util.Objects;
+
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -101,4 +103,25 @@ public class Activity {
     public String toString() {
         return "Activity [apiKeyId=" + apiKeyId + ", mqttVersion=" + mqttVersion + ", mqttUsername=" + mqttUsername + ", mqttTimeout=" + mqttTimeout + ", remoteAddress=" + remoteAddress + ", lastSessionStartTime=" + lastSessionStartTime + ", lastSessionEndTime=" + lastSessionEndTime + "]";
     }
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(apiKeyId, lastSessionEndTime, lastSessionStartTime, mqttTimeout, mqttUsername, mqttVersion,
+				remoteAddress);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (!(obj instanceof Activity))
+			return false;
+		Activity other = (Activity) obj;
+		return Objects.equals(apiKeyId, other.apiKeyId) && Objects.equals(lastSessionEndTime, other.lastSessionEndTime)
+				&& Objects.equals(lastSessionStartTime, other.lastSessionStartTime)
+				&& Objects.equals(mqttTimeout, other.mqttTimeout) && Objects.equals(mqttUsername, other.mqttUsername)
+				&& Objects.equals(mqttVersion, other.mqttVersion) && Objects.equals(remoteAddress, other.remoteAddress);
+	}
 }

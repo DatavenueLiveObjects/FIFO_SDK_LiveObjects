@@ -7,6 +7,8 @@
 
 package com.orange.lo.sdk.rest.model;
 
+import java.util.Objects;
+
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -101,4 +103,24 @@ public class Group {
     public String toString() {
         return "Group{" + "id='" + id + '\'' + ", pathNode='" + pathNode + '\'' + ", path='" + path + '\'' + ", parentId='" + parentId + '\'' + ", description='" + description + '\'' + ", created='" + created + '\'' + ", updated='" + updated + '\'' + '}';
     }
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(created, description, id, parentId, path, pathNode, updated);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (!(obj instanceof Group))
+			return false;
+		Group other = (Group) obj;
+		return Objects.equals(created, other.created) && Objects.equals(description, other.description)
+				&& Objects.equals(id, other.id) && Objects.equals(parentId, other.parentId)
+				&& Objects.equals(path, other.path) && Objects.equals(pathNode, other.pathNode)
+				&& Objects.equals(updated, other.updated);
+	}   
 }
