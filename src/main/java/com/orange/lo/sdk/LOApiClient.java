@@ -11,6 +11,8 @@ import com.orange.lo.sdk.externalconnector.DataManagementExtConnector;
 import com.orange.lo.sdk.fifomqtt.DataManagementFifo;
 import com.orange.lo.sdk.mqtt.MqttClientFactory;
 import com.orange.lo.sdk.mqtt.MqttClientFactoryImpl;
+import com.orange.lo.sdk.rest.RestTemplateFactoryImpl;
+import com.orange.lo.sdk.rest.apikeys.ApiKeys;
 import com.orange.lo.sdk.rest.devicemanagement.DeviceManagement;
 
 public class LOApiClient {
@@ -18,12 +20,15 @@ public class LOApiClient {
     private DeviceManagement deviceManagement;
     private DataManagementFifo dataManagementFifo;
     private DataManagementExtConnector dataManagementExtConnector;
+    private ApiKeys apiKeys;
 
-    public LOApiClient(LOApiClientParameters parameters) {
-        this.deviceManagement = new DeviceManagement(parameters);
+	public LOApiClient(LOApiClientParameters parameters) {
+    	RestTemplateFactoryImpl restTemplateFactoryImpl = new RestTemplateFactoryImpl(parameters);
+        this.deviceManagement = new DeviceManagement(restTemplateFactoryImpl);
         MqttClientFactory mqttClientFactory = new MqttClientFactoryImpl(parameters.getHostname(), parameters.getMqttPersistenceDataDir());
         this.dataManagementFifo = new DataManagementFifo(parameters, mqttClientFactory);
         this.dataManagementExtConnector = new DataManagementExtConnector(parameters, mqttClientFactory);
+        this.apiKeys = new ApiKeys(restTemplateFactoryImpl);
     }
 
     public DeviceManagement getDeviceManagement() {
@@ -37,4 +42,8 @@ public class LOApiClient {
     public DataManagementExtConnector getDataManagementExtConnector() {
         return dataManagementExtConnector;
     }
+    
+    public ApiKeys getApiKeys() {
+		return apiKeys;
+	}
 }

@@ -7,7 +7,6 @@
 
 package com.orange.lo.sdk.rest.devicemanagement;
 
-import com.orange.lo.sdk.LOApiClientParameters;
 import com.orange.lo.sdk.rest.RestTemplateFactoryImpl;
 
 public class DeviceManagement {
@@ -15,8 +14,7 @@ public class DeviceManagement {
     private final Inventory inventory;
     private final Groups groups;
 
-    public DeviceManagement(LOApiClientParameters parameters) {
-        RestTemplateFactoryImpl restTemplateFactoryImpl = new RestTemplateFactoryImpl(parameters);
+    public DeviceManagement(RestTemplateFactoryImpl restTemplateFactoryImpl) {
         this.inventory = new Inventory(restTemplateFactoryImpl);
         this.groups = new Groups(restTemplateFactoryImpl);
     }

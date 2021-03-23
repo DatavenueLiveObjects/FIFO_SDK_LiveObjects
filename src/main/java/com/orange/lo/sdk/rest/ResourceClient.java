@@ -15,6 +15,8 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 
+import com.orange.lo.sdk.rest.model.V0Response;
+
 public abstract class ResourceClient {
 
     private final RestTemplate restTemplate;
@@ -31,6 +33,11 @@ public abstract class ResourceClient {
     protected <T> List<T> getMany(String uri, ParameterizedTypeReference<List<T>> typeRef) {
         ResponseEntity<List<T>> exchange = restTemplate.exchange(uri, HttpMethod.GET, null, typeRef);
         return exchange.getBody();
+    }
+    
+    protected <T> List<T> getV0Many(String uri, ParameterizedTypeReference<V0Response<T>> typeRef) {
+        ResponseEntity<V0Response<T>> exchange = restTemplate.exchange(uri, HttpMethod.GET, null, typeRef);
+        return exchange.getBody().getData();
     }
     
     protected void delete(String uri) {
