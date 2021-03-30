@@ -82,6 +82,25 @@ GetGroupsFilter getGroupsFilter = new GetGroupsFilter().withOffset(0)
 List<Group> groupsList = groups.getGroups(getGroupsFilter);
 ```
 
+#### Retrieving data about commands
+`LOApiClient` allows retrieve data about a single command or list of commands. To retrieve the data about commands from Live Objects, you can use the sample code:
+
+Getting commands client:
+```java
+DeviceManagement deviceManagement = client.getDeviceManagement();
+Commands commands = deviceManagement.getCommands();
+```
+Retrieving data of a single command:
+```java
+Command command = commands.getCommand("commandId");
+```
+Retrieving data about the list of commands:
+```java
+GetCommandsFilter getCommandsFilter = new GetCommandsFilter().withOffset(0)
+        .withLimit(20);
+List<Command> commands = commands.getCommands("deviceId", getCommandsFilter);
+```
+
 #### Subscribing and retrieving data from FIFO queues
 `LOApiClient` allows retrieve data from fifo queues.
 
@@ -107,7 +126,7 @@ LOApiClient client = new LOApiClient(parameters);
 To start retrieving message, you should use subscribe method:
 ```java
 DataManagementFifo dataManagementFifo = client.getDataManagementFifo);
-dataManagementFifo.subscribe();
+dataManagementFifo.connectAndSubscribe();
 ```
 
 To stop retrieving messages, you should use disconnect method:

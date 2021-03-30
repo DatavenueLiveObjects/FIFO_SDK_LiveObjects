@@ -30,22 +30,31 @@ public abstract class ResourceClient {
         return exchange.getBody();
     }
 
+    protected <T> T get(String uri, ParameterizedTypeReference<T> typeRef) {
+        ResponseEntity<T> exchange = restTemplate.exchange(uri, HttpMethod.GET, null, typeRef);
+        return exchange.getBody();
+    }
+
     protected <T> List<T> getMany(String uri, ParameterizedTypeReference<List<T>> typeRef) {
         ResponseEntity<List<T>> exchange = restTemplate.exchange(uri, HttpMethod.GET, null, typeRef);
         return exchange.getBody();
     }
-    
+
     protected <T> List<T> getV0Many(String uri, ParameterizedTypeReference<V0Response<T>> typeRef) {
         ResponseEntity<V0Response<T>> exchange = restTemplate.exchange(uri, HttpMethod.GET, null, typeRef);
         return exchange.getBody().getData();
     }
-    
+
     protected void delete(String uri) {
     	restTemplate.exchange(uri, HttpMethod.DELETE, null, Void.class);
 	}
-    
-    protected <T> T create(String uri, T body, Class<T> responseType) {
-    	ResponseEntity<T> exchange = restTemplate.exchange(uri, HttpMethod.POST, new HttpEntity<T>(body), responseType);
-		return exchange.getBody();
-	}
+
+    protected <T, S> S create(String uri, T body, Class<S> responseType) {
+        ResponseEntity<S> exchange = restTemplate.exchange(uri, HttpMethod.POST, new HttpEntity<T>(body), responseType);
+        return exchange.getBody();
+    }
+
+    protected <T> void update(String uri, T body) {
+        restTemplate.exchange(uri, HttpMethod.PUT, new HttpEntity<T>(body), Void.class);
+    }
 }

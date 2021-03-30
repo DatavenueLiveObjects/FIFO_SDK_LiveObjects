@@ -19,7 +19,7 @@ public class Capabilities {
     private Configuration configuration;
 
     @JsonProperty("command")
-    private Command command;
+    private InterfaceCapability command;
 
     @JsonProperty("resource")
     private Resource resource;
@@ -29,8 +29,8 @@ public class Capabilities {
         return this;
     }
 
-    public Capabilities withCommand(Command command) {
-        this.command = command;
+    public Capabilities withCommand(InterfaceCapability interfaceCapability) {
+        this.command = interfaceCapability;
         return this;
     }
 
@@ -43,7 +43,7 @@ public class Capabilities {
         return configuration;
     }
 
-    public Command getCommand() {
+    public InterfaceCapability getCommand() {
         return command;
     }
 
@@ -56,21 +56,22 @@ public class Capabilities {
         return "Capabilities [configuration=" + configuration + ", command=" + command + ", resource=" + resource + "]";
     }
 
-	@Override
-	public int hashCode() {
-		return Objects.hash(command, configuration, resource);
-	}
+    @Override
+    public int hashCode() {
+        return Objects.hash(command, configuration, resource);
+    }
 
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (!(obj instanceof Capabilities))
-			return false;
-		Capabilities other = (Capabilities) obj;
-		return Objects.equals(command, other.command) && Objects.equals(configuration, other.configuration)
-				&& Objects.equals(resource, other.resource);
-	}
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (!(obj instanceof Capabilities))
+            return false;
+        Capabilities other = (Capabilities) obj;
+        return Objects.equals(command, other.command)
+                && Objects.equals(configuration, other.configuration)
+                && Objects.equals(resource, other.resource);
+    }
 }
