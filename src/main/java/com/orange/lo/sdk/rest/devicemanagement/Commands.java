@@ -25,6 +25,8 @@ public class Commands extends ResourceClient {
     private static final String COMMAND_ENDPOINT = "/v1/deviceMgt/commands/{commandId}";
     private static final String STATUS_ENDPOINT = "/v1/deviceMgt/commands/{commandId}/status";
     private static final String COMMANDS_ENDPOINT = "/v1/deviceMgt/devices/{deviceId}/commands";
+    private static final String CONTENT = "content";
+    private static final String VALIDATE = "validate";
 
     public Commands(RestTemplateFactory restTemplateFactory) {
         super(restTemplateFactory);
@@ -51,7 +53,7 @@ public class Commands extends ResourceClient {
         ParameterizedTypeReference<Map<String, String>> typeRef = new ParameterizedTypeReference<Map<String, String>>() {
         };
         Map<String, String> s = get(uri, typeRef);
-        return CommandStatus.valueOf(s.get("content"));
+        return CommandStatus.valueOf(s.get(CONTENT));
     }
 
     public void setCommandStatus(String commandId, CommandStatus status) {
@@ -78,7 +80,7 @@ public class Commands extends ResourceClient {
 
     public CommandResponse addCommand(String deviceId, CommandAddRequest body, Boolean validate) {
         String uri = UriComponentsBuilder.fromUriString(COMMANDS_ENDPOINT)
-                .queryParam("validate", validate)
+                .queryParam(VALIDATE, validate)
                 .buildAndExpand(deviceId)
                 .toUriString();
         return create(uri, body, CommandResponse.class);
