@@ -13,10 +13,12 @@ public class DeviceManagement {
 
     private final Inventory inventory;
     private final Groups groups;
+    private final Commands commands;
 
     public DeviceManagement(RestTemplateFactoryImpl restTemplateFactoryImpl) {
         this.inventory = new Inventory(restTemplateFactoryImpl);
         this.groups = new Groups(restTemplateFactoryImpl);
+        this.commands = new Commands(restTemplateFactoryImpl);
     }
 
     public Inventory getInventory() {
@@ -25,5 +27,9 @@ public class DeviceManagement {
 
     public Groups getGroups() {
         return groups;
+    }
+
+    public Commands getCommands() {
+        return commands;
     }
 }
