@@ -21,12 +21,12 @@ public class CommandRequest {
     @JsonProperty("value")
     private CommandRequestValue value = null;
 
-    public CommandRequest connector(String connector) {
+    public CommandRequest withConnector(String connector) {
         this.connector = connector;
         return this;
     }
 
-    public CommandRequest value(CommandRequestValue value) {
+    public CommandRequest withValue(CommandRequestValue value) {
         this.value = value;
         return this;
     }
@@ -35,8 +35,16 @@ public class CommandRequest {
         return connector;
     }
 
-    public Object getValue() {
+    public void setConnector(String connector) {
+        this.connector = connector;
+    }
+
+    public CommandRequestValue getValue() {
         return value;
+    }
+
+    public void setValue(CommandRequestValue value) {
+        this.value = value;
     }
 
     @Override

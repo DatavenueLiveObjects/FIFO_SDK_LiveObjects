@@ -29,8 +29,16 @@ public class CommandRequestValue {
         return req;
     }
 
+    public void setReq(String req) {
+        this.req = req;
+    }
+
     public Map<String, String> getArg() {
         return arg;
+    }
+
+    public void setArg(Map<String, String> arg) {
+        this.arg = arg;
     }
 
     @Override
