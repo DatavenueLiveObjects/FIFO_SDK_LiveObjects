@@ -22,16 +22,30 @@ class LOApiClientParametersTest {
     @Test
     void shouldSetApiKey() {
         LOApiClientParameters parameters = LOApiClientParameters.builder()
-                .apiKey(API_KEY)
+                .credentials(new ApiKeyCredentials(API_KEY))
                 .build();
 
-        assertEquals(API_KEY, parameters.getApiKey());
+        ApiKeyCredentials credentials = (ApiKeyCredentials) parameters.getCredentials();
+        assertEquals(API_KEY, credentials.getApiKey());
+    }
+
+    @Test
+    void shouldSetLoginAndPassword() {
+        String login = "my.login";
+        String password = "mySuperStr0ngPassword";
+        LOApiClientParameters parameters = LOApiClientParameters.builder()
+                .credentials(new LoginAndPasswordCredentials(login, password))
+                .build();
+
+        LoginAndPasswordCredentials credentials = (LoginAndPasswordCredentials) parameters.getCredentials();
+        assertEquals(login, credentials.getLogin());
+        assertEquals(password, credentials.getPassword());
     }
 
     @Test
     void shouldSetDefaultHostnameWhenHostnameWasNotSet() {
         LOApiClientParameters parameters = LOApiClientParameters.builder()
-                .apiKey(API_KEY)
+                .credentials(new ApiKeyCredentials(API_KEY))
                 .build();
 
         assertEquals(LOApiClientParameters.DEFAULT_HOSTNAME, parameters.getHostname());
@@ -41,7 +55,7 @@ class LOApiClientParametersTest {
     void shouldChangeHostnameWhenHostnameWasSet() {
         LOApiClientParameters parameters = LOApiClientParameters.builder()
                 .hostname(HOSTNAME)
-                .apiKey(API_KEY)
+                .credentials(new ApiKeyCredentials(API_KEY))
                 .build();
 
         assertEquals(HOSTNAME, parameters.getHostname());
@@ -50,7 +64,7 @@ class LOApiClientParametersTest {
     @Test
     void shouldSetDefaultUsernameWhenUsernameWasNotSet() {
         LOApiClientParameters parameters = LOApiClientParameters.builder()
-                .apiKey(API_KEY)
+                .credentials(new ApiKeyCredentials(API_KEY))
                 .build();
 
         assertEquals(LOApiClientParameters.DEFAULT_USERNAME, parameters.getUsername());
@@ -60,7 +74,7 @@ class LOApiClientParametersTest {
     void shouldChangeUsernameWhenUsernameWasSet() {
         String username = "newUsername";
         LOApiClientParameters parameters = LOApiClientParameters.builder()
-                .apiKey(API_KEY)
+                .credentials(new ApiKeyCredentials(API_KEY))
                 .username(username)
                 .build();
 
@@ -70,7 +84,7 @@ class LOApiClientParametersTest {
     @Test
     void shouldSetDefaultMessageQosWhenMessageQosWasNotSet() {
         LOApiClientParameters parameters = LOApiClientParameters.builder()
-                .apiKey(API_KEY)
+                .credentials(new ApiKeyCredentials(API_KEY))
                 .build();
 
         assertEquals(LOApiClientParameters.DEFAULT_MESSAGE_QOS, parameters.getMessageQos());
@@ -80,7 +94,7 @@ class LOApiClientParametersTest {
     void shouldChangeMessageQosWhenMessageQosWasSet() {
         int messageQos = 2;
         LOApiClientParameters parameters = LOApiClientParameters.builder()
-                .apiKey(API_KEY)
+                .credentials(new ApiKeyCredentials(API_KEY))
                 .messageQos(messageQos)
                 .build();
 
@@ -91,7 +105,7 @@ class LOApiClientParametersTest {
     void shouldSetAutomaticReconnectWhenAutomaticReconnectWasSet() {
         boolean automaticReconnect = true;
         LOApiClientParameters parameters = LOApiClientParameters.builder()
-                .apiKey(API_KEY)
+                .credentials(new ApiKeyCredentials(API_KEY))
                 .automaticReconnect(automaticReconnect)
                 .build();
 
@@ -101,7 +115,7 @@ class LOApiClientParametersTest {
     @Test
     void shouldSetDefaultKeepAliveIntervalSecondsWhenKeepAliveIntervalSecondsWasNotSet() {
         LOApiClientParameters parameters = LOApiClientParameters.builder()
-                .apiKey(API_KEY)
+                .credentials(new ApiKeyCredentials(API_KEY))
                 .build();
 
         assertEquals(LOApiClientParameters.DEFAULT_KEEP_ALIVE_INTERVAL, parameters.getKeepAliveIntervalSeconds());
@@ -111,7 +125,7 @@ class LOApiClientParametersTest {
     void shouldChangeKeepAliveIntervalSecondsWhenKeepAliveIntervalSecondsWasSet() {
         int keepAliveIntervalSeconds = 10;
         LOApiClientParameters parameters = LOApiClientParameters.builder()
-                .apiKey(API_KEY)
+                .credentials(new ApiKeyCredentials(API_KEY))
                 .keepAliveIntervalSeconds(keepAliveIntervalSeconds)
                 .build();
 
@@ -122,7 +136,7 @@ class LOApiClientParametersTest {
     @Test
     void shouldSetDefaultConnectionTimeoutWhenConnectionTimeoutWasNotSet() {
         LOApiClientParameters parameters = LOApiClientParameters.builder()
-                .apiKey(API_KEY)
+                .credentials(new ApiKeyCredentials(API_KEY))
                 .build();
 
         assertEquals(LOApiClientParameters.DEFAULT_CONNECTION_TIMEOUT, parameters.getConnectionTimeout());
@@ -132,7 +146,7 @@ class LOApiClientParametersTest {
     void shouldChangeConnectionTimeoutWhenConnectionTimeoutWasSet() {
         int connectionTimeout = 10;
         LOApiClientParameters parameters = LOApiClientParameters.builder()
-                .apiKey(API_KEY)
+                .credentials(new ApiKeyCredentials(API_KEY))
                 .connectionTimeout(connectionTimeout)
                 .build();
 
@@ -142,7 +156,7 @@ class LOApiClientParametersTest {
     @Test
     void shouldSetTopics() {
         LOApiClientParameters parameters = LOApiClientParameters.builder()
-                .apiKey(API_KEY)
+                .credentials(new ApiKeyCredentials(API_KEY))
                 .topics(TOPICS)
                 .dataManagementMqttCallback(System.out::println)
                 .build();
@@ -153,7 +167,7 @@ class LOApiClientParametersTest {
     @Test
     void shouldSetDataManagementMqttCallback() {
         LOApiClientParameters parameters = LOApiClientParameters.builder()
-                .apiKey(API_KEY)
+                .credentials(new ApiKeyCredentials(API_KEY))
                 .topics(TOPICS)
                 .dataManagementMqttCallback(System.out::println)
                 .build();
@@ -164,7 +178,7 @@ class LOApiClientParametersTest {
     @Test
     void shouldSetDefaultExtConnectorUsernameWhenUsernameWasNotSet() {
         LOApiClientParameters parameters = LOApiClientParameters.builder()
-                .apiKey(API_KEY)
+                .credentials(new ApiKeyCredentials(API_KEY))
                 .build();
 
         assertEquals(LOApiClientParameters.DEFAULT_EXT_CONNECTOR_USER, parameters.getExtConnectorUsername());
@@ -174,7 +188,7 @@ class LOApiClientParametersTest {
     void shouldChangeExtConnectorUsernameWhenUsernameWasSet() {
         String username = "newExtUsername";
         LOApiClientParameters parameters = LOApiClientParameters.builder()
-                .apiKey(API_KEY)
+                .credentials(new ApiKeyCredentials(API_KEY))
                 .extConnectorUsername(username)
                 .build();
 
@@ -184,7 +198,7 @@ class LOApiClientParametersTest {
     @Test
     void shouldSetDataManagementExtConnectorCommandCallback() {
         LOApiClientParameters parameters = LOApiClientParameters.builder()
-                .apiKey(API_KEY)
+                .credentials(new ApiKeyCredentials(API_KEY))
                 .dataManagementExtConnectorCommandCallback((commandRequest) -> null)
                 .build();
 
@@ -194,7 +208,7 @@ class LOApiClientParametersTest {
     @Test
     void shouldSetDefaultCommandResponseTopicWhenCommandResponseTopicWasNotSet() {
         LOApiClientParameters parameters = LOApiClientParameters.builder()
-                .apiKey(API_KEY)
+                .credentials(new ApiKeyCredentials(API_KEY))
                 .build();
 
         assertEquals(DEFAULT_EXT_CONNECTOR_COMMAND_RESPONSE_TOPIC, parameters.getExtConnectorCommandResponseTopic());
@@ -204,7 +218,7 @@ class LOApiClientParametersTest {
     void shouldChangeDefaultExtConnectorCommandRequestTopicWhenCommandResponseTopicWasSet() {
         String commandResponseTopic = "new/command/response/topic";
         LOApiClientParameters parameters = LOApiClientParameters.builder()
-                .apiKey(API_KEY)
+                .credentials(new ApiKeyCredentials(API_KEY))
                 .extConnectorCommandResponseTopic(commandResponseTopic)
                 .build();
 
@@ -214,7 +228,7 @@ class LOApiClientParametersTest {
     @Test
     void shouldSetDefaultExtConnectorCommandRequestTopicWhenCommandRequestTopicWasNotSet() {
         LOApiClientParameters parameters = LOApiClientParameters.builder()
-                .apiKey(API_KEY)
+                .credentials(new ApiKeyCredentials(API_KEY))
                 .build();
 
         assertEquals(DEFAULT_EXT_CONNECTOR_COMMAND_REQUEST_TOPIC, parameters.getExtConnectorCommandRequestTopic());
@@ -224,7 +238,7 @@ class LOApiClientParametersTest {
     void shouldChangeDefaultExtConnectorCommandRequestTopicWhenCommandRequestTopicWasSet() {
         String commandRequestTopic = "new/command/request/topic";
         LOApiClientParameters parameters = LOApiClientParameters.builder()
-                .apiKey(API_KEY)
+                .credentials(new ApiKeyCredentials(API_KEY))
                 .extConnectorCommandRequestTopic(commandRequestTopic)
                 .build();
 
@@ -234,7 +248,7 @@ class LOApiClientParametersTest {
     @Test
     void shouldSetDefaultExtConnectorStatusTopicTemplateWhenStatusTopicTemplateWasNotSet() {
         LOApiClientParameters parameters = LOApiClientParameters.builder()
-                .apiKey(API_KEY)
+                .credentials(new ApiKeyCredentials(API_KEY))
                 .build();
 
         assertEquals(DEFAULT_EXT_CONNECTOR_STATUS_TOPIC_TEMPLATE, parameters.getExtConnectorStatusTopicTemplate());
@@ -244,7 +258,7 @@ class LOApiClientParametersTest {
     void shouldChangeDefaultExtConnectorStatusTopicTemplateWhenStatusTopicTemplateWasSet() {
         String statusTopicTemplate = "/%s/new/status/topic/template";
         LOApiClientParameters parameters = LOApiClientParameters.builder()
-                .apiKey(API_KEY)
+                .credentials(new ApiKeyCredentials(API_KEY))
                 .extConnectorStatusTopicTemplate(statusTopicTemplate)
                 .build();
 
@@ -254,7 +268,7 @@ class LOApiClientParametersTest {
     @Test
     void shouldSetDefaultDataTopicTemplateWhenDataTopicTemplateWasNotSet() {
         LOApiClientParameters parameters = LOApiClientParameters.builder()
-                .apiKey(API_KEY)
+                .credentials(new ApiKeyCredentials(API_KEY))
                 .build();
 
         assertEquals(DEFAULT_EXT_CONNECTOR_DATA_TOPIC_TEMPLATE, parameters.getExtConnectorDataTopicTemplate());
@@ -264,7 +278,7 @@ class LOApiClientParametersTest {
     void shouldChangeDefaultDataTopicTemplateWhenDataTopicTemplateWasSet() {
         String dataTopicTemplate = "/%s/new/data/topic/template";
         LOApiClientParameters parameters = LOApiClientParameters.builder()
-                .apiKey(API_KEY)
+                .credentials(new ApiKeyCredentials(API_KEY))
                 .extConnectorDataTopicTemplate(dataTopicTemplate)
                 .build();
 
@@ -274,7 +288,7 @@ class LOApiClientParametersTest {
     @Test
     void shouldThrowIllegalArgumentExceptionWhenTopicsAreSetAndCallbackIsNot() {
         LOApiClientParameters.LOApiClientParametersBuilder builder = LOApiClientParameters.builder()
-                .apiKey(API_KEY)
+                .credentials(new ApiKeyCredentials(API_KEY))
                 .topics(TOPICS);
 
         IllegalArgumentException illegalArgumentException = assertThrows(IllegalArgumentException.class, builder::build);
@@ -284,7 +298,7 @@ class LOApiClientParametersTest {
     @Test
     void shouldThrowIllegalArgumentExceptionWhenCallbackIsSetAndTopicsAreNot() {
         LOApiClientParameters.LOApiClientParametersBuilder builder = LOApiClientParameters.builder()
-                .apiKey(API_KEY)
+                .credentials(new ApiKeyCredentials(API_KEY))
                 .dataManagementMqttCallback(System.out::println);
 
         IllegalArgumentException illegalArgumentException = assertThrows(IllegalArgumentException.class, builder::build);
@@ -303,7 +317,7 @@ class LOApiClientParametersTest {
     void shouldThrowIllegalArgumentExceptionWhenHostnameIsNotSet() {
         LOApiClientParameters.LOApiClientParametersBuilder builder = LOApiClientParameters.builder()
                 .hostname(null)
-                .apiKey(API_KEY);
+                .credentials(new ApiKeyCredentials(API_KEY));
 
         IllegalArgumentException illegalArgumentException = assertThrows(IllegalArgumentException.class, builder::build);
         assertEquals("Api key and hostname are required", illegalArgumentException.getMessage());

@@ -1,5 +1,6 @@
 package com.orange.lo.sdk.fifomqtt;
 
+import com.orange.lo.sdk.ApiKeyCredentials;
 import com.orange.lo.sdk.LOApiClientParameters;
 import org.eclipse.paho.client.mqttv3.IMqttClient;
 import org.eclipse.paho.client.mqttv3.IMqttMessageListener;
@@ -28,12 +29,13 @@ class DataManagementFifoTest {
 
     @BeforeEach
     void setUp() {
+        ApiKeyCredentials credentials = new ApiKeyCredentials(API_KEY);
         LOApiClientParameters parameters = LOApiClientParameters.builder()
-                .apiKey(API_KEY)
+                .credentials(credentials)
                 .topics(Arrays.asList("topic-01", "topic-02"))
                 .dataManagementMqttCallback(System.out::println)
                 .build();
-        this.dataManagementFifo = new DataManagementFifo(parameters, () -> mqttClient);
+        this.dataManagementFifo = new DataManagementFifo(parameters, () -> mqttClient, credentials.getApiKey());
     }
 
     @Test

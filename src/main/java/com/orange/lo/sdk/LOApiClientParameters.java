@@ -9,6 +9,7 @@ package com.orange.lo.sdk;
 
 import com.orange.lo.sdk.externalconnector.DataManagementExtConnectorCommandCallback;
 import com.orange.lo.sdk.fifomqtt.DataManagementFifoCallback;
+import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,14 +23,14 @@ public final class LOApiClientParameters {
     public static final int DEFAULT_MAX_INFLIGHT = 10;
     public static final boolean DEFAULT_CLEAN_SESSION = true;
     public static final int DEFAULT_CONNECTION_TIMEOUT = 30000;
-    public static final String DEFAULT_MQTT_PERSISTENCE_DATA_DIR = System.getProperty("user.dir"); 
+    public static final String DEFAULT_MQTT_PERSISTENCE_DATA_DIR = System.getProperty("user.dir");
     public static final String DEFAULT_EXT_CONNECTOR_USER = "connector";
     public static final String DEFAULT_EXT_CONNECTOR_COMMAND_REQUEST_TOPIC = "connector/v1/requests/command";
     public static final String DEFAULT_EXT_CONNECTOR_COMMAND_RESPONSE_TOPIC = "connector/v1/responses/command";
     public static final String DEFAULT_EXT_CONNECTOR_DATA_TOPIC_TEMPLATE = "connector/v1/nodes/%s/data";
     public static final String DEFAULT_EXT_CONNECTOR_STATUS_TOPIC_TEMPLATE = "connector/v1/nodes/%s/status";
 
-    private final String apiKey;
+    private final Credentials credentials;
     private final String hostname;
     private final String username;
     private final String extConnectorUsername;
@@ -49,7 +50,7 @@ public final class LOApiClientParameters {
     private final String extConnectorDataTopicTemplate;
 
     private LOApiClientParameters(LOApiClientParametersBuilder builder) {
-        this.apiKey = builder.apiKey;
+        this.credentials = builder.credentials;
         this.hostname = builder.hostname;
         this.username = builder.username;
         this.extConnectorUsername = builder.extConnectorUsername;
@@ -69,8 +70,8 @@ public final class LOApiClientParameters {
         this.extConnectorDataTopicTemplate = builder.extConnectorDataTopicTemplate;
     }
 
-    public String getApiKey() {
-        return apiKey;
+    public Credentials getCredentials() {
+        return credentials;
     }
 
     public String getHostname() {
@@ -100,7 +101,7 @@ public final class LOApiClientParameters {
     public int getKeepAliveIntervalSeconds() {
         return keepAliveIntervalSeconds;
     }
-               
+
     public int getMaxInflight() {
     	return maxInflight;
     }
@@ -112,7 +113,7 @@ public final class LOApiClientParameters {
     public String getMqttPersistenceDataDir() {
 		return mqttPersistenceDataDir;
 	}
-    
+
     public List<String> getTopics() {
         return topics;
     }
@@ -147,7 +148,7 @@ public final class LOApiClientParameters {
 
     public static final class LOApiClientParametersBuilder {
 
-		private String apiKey;
+		private Credentials credentials;
         private String hostname = DEFAULT_HOSTNAME;
         private String username = DEFAULT_USERNAME;
         private String extConnectorUsername = DEFAULT_EXT_CONNECTOR_USER;
@@ -166,8 +167,8 @@ public final class LOApiClientParameters {
         private String extConnectorStatusTopicTemplate = DEFAULT_EXT_CONNECTOR_STATUS_TOPIC_TEMPLATE;
         private String extConnectorDataTopicTemplate = DEFAULT_EXT_CONNECTOR_DATA_TOPIC_TEMPLATE;
 
-        public LOApiClientParametersBuilder apiKey(String apiKey) {
-            this.apiKey = apiKey;
+        public LOApiClientParametersBuilder credentials(Credentials credentials) {
+            this.credentials = credentials;
             return this;
         }
 
@@ -195,7 +196,7 @@ public final class LOApiClientParameters {
             this.automaticReconnect = automaticReconnect;
             return this;
         }
-        
+
         public LOApiClientParametersBuilder cleanSession(boolean cleanSession) {
             this.cleanSession = cleanSession;
             return this;
@@ -205,7 +206,7 @@ public final class LOApiClientParameters {
             this.keepAliveIntervalSeconds = keepAliveIntervalSeconds;
             return this;
         }
-        
+
         public LOApiClientParametersBuilder maxInflight(int maxInflight) {
             this.maxInflight = maxInflight;
             return this;
@@ -215,12 +216,12 @@ public final class LOApiClientParameters {
             this.connectionTimeout = connectionTimeout;
             return this;
         }
-        
+
         public LOApiClientParametersBuilder mqttPersistenceDataDir(String dataDir) {
             this.mqttPersistenceDataDir = dataDir;
             return this;
         }
-        
+
         public LOApiClientParametersBuilder topics(List<String> topics) {
             this.topics = topics;
             return this;
@@ -263,12 +264,32 @@ public final class LOApiClientParameters {
         }
 
         private void validate() {
-            if (this.apiKey == null || this.apiKey.trim().length() == 0 || this.hostname == null || this.hostname.trim().length() == 0) {
+            if (!isHostnameCorrect() || !areCredentialsCorrect()) {
                 throw new IllegalArgumentException("Api key and hostname are required");
             }
             if ((!topics.isEmpty() && dataManagementFifoCallback == null) || (topics.isEmpty() && dataManagementFifoCallback != null)) {
                 throw new IllegalArgumentException("Topics and DataManagementMqttCallback must be set simultaneously");
             }
+        }
+
+        private boolean isHostnameCorrect() {
+            return !StringUtils.isEmpty(hostname);
+        }
+
+        private boolean areCredentialsCorrect() {
+            if (credentials == null) {
+                return false;
+            }
+            if (credentials instanceof LoginAndPasswordCredentials) {
+                LoginAndPasswordCredentials loginAndPasswordCredentials = (LoginAndPasswordCredentials) credentials;
+                return !StringUtils.isEmpty(loginAndPasswordCredentials.getLogin())
+                        && !StringUtils.isEmpty(loginAndPasswordCredentials.getPassword());
+            }
+            if (credentials instanceof ApiKeyCredentials) {
+                ApiKeyCredentials apiKeyCredentials = (ApiKeyCredentials) credentials;
+                return !StringUtils.isEmpty(apiKeyCredentials.getApiKey());
+            }
+            return false;
         }
     }
 }

@@ -1,5 +1,6 @@
 package com.orange.lo.sdk.rest;
 
+import com.orange.lo.sdk.ApiKeyCredentials;
 import com.orange.lo.sdk.LOApiClientParameters;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.client.ClientHttpRequestInterceptor;
@@ -18,9 +19,11 @@ class RestTemplateFactoryImplTest {
     @Test
     void shouldCorrectlyCreateRestTemplate() {
         LOApiClientParameters parameters = LOApiClientParameters.builder()
-                .apiKey(API_KEY)
+                .credentials(new ApiKeyCredentials(API_KEY))
                 .build();
-        RestTemplateFactoryImpl restTemplateFactory = new RestTemplateFactoryImpl(parameters);
+
+        ApiKeyCredentials credentials = (ApiKeyCredentials) parameters.getCredentials();
+        RestTemplateFactoryImpl restTemplateFactory = new RestTemplateFactoryImpl(parameters, credentials.getApiKey());
 
         RestTemplate restTemplate = restTemplateFactory.getRestTemplate();
 

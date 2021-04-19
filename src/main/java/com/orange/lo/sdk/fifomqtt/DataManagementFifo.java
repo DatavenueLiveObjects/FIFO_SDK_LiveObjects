@@ -22,8 +22,8 @@ public class DataManagementFifo extends AbstractDataManagementMqtt {
 
     private final DataManagementFifoCallback callback;
 
-    public DataManagementFifo(LOApiClientParameters parameters, MqttClientFactory mqttClientFactory) {
-        super(parameters, mqttClientFactory);
+    public DataManagementFifo(LOApiClientParameters parameters, MqttClientFactory mqttClientFactory, String apiKey) {
+        super(parameters, mqttClientFactory, apiKey);
         this.callback = parameters.getDataManagementFifoCallback();
     }
 

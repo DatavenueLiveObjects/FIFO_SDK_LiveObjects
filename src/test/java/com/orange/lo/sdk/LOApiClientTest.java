@@ -16,7 +16,7 @@ class LOApiClientTest {
     @BeforeEach
     void setUp() {
         LOApiClientParameters parameters = LOApiClientParameters.builder()
-                .apiKey(API_KEY)
+                .credentials(new ApiKeyCredentials(API_KEY))
                 .build();
         this.loApiClient = new LOApiClient(parameters);
     }

@@ -1,3 +1,10 @@
+/**
+ * Copyright (c) Orange. All Rights Reserved.
+ * <p>
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+
 package com.orange.lo.sdk.mqtt;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -15,11 +22,14 @@ public abstract class AbstractDataManagementMqtt {
     private final IMqttClient mqttClient;
     private final ObjectMapper objectMapper;
     private final LOApiClientParameters parameters;
+    private final String apiKey;
 
-    public AbstractDataManagementMqtt(LOApiClientParameters parameters, MqttClientFactory mqttClientFactory) {
+    protected AbstractDataManagementMqtt(LOApiClientParameters parameters, MqttClientFactory mqttClientFactory,
+                                      String apiKey) {
         this.mqttClient = mqttClientFactory.getMqttClient();
         this.parameters = parameters;
         this.objectMapper = new ObjectMapper();
+        this.apiKey = apiKey;
     }
 
     public void disconnect() {
@@ -44,14 +54,14 @@ public abstract class AbstractDataManagementMqtt {
     protected MqttConnectOptions getMqttConnectionOptions() {
         MqttConnectOptions opts = new MqttConnectOptions();
         opts.setUserName(parameters.getUsername());
-        opts.setPassword(parameters.getApiKey().toCharArray());
+        opts.setPassword(apiKey.toCharArray());
         opts.setAutomaticReconnect(parameters.isAutomaticReconnect());
         opts.setKeepAliveInterval(parameters.getKeepAliveIntervalSeconds());
         opts.setAutomaticReconnect(parameters.isAutomaticReconnect());
         opts.setConnectionTimeout(parameters.getConnectionTimeout());
         opts.setCleanSession(parameters.isCleanSession());
         opts.setMaxInflight(parameters.getMaxInflight());
-                            
+
         return opts;
     }
 

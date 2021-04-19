@@ -25,8 +25,9 @@ import java.io.IOException;
 
 public class DataManagementExtConnector extends AbstractDataManagementMqtt {
 
-    public DataManagementExtConnector(LOApiClientParameters parameters, MqttClientFactory mqttClientFactory) {
-        super(parameters, mqttClientFactory);
+    public DataManagementExtConnector(LOApiClientParameters parameters, MqttClientFactory mqttClientFactory,
+                                      String apiKey) {
+        super(parameters, mqttClientFactory, apiKey);
     }
 
     @Override
