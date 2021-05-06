@@ -9,6 +9,7 @@ package com.orange.lo.sdk.rest;
 
 import com.orange.lo.sdk.LOApiClientParameters;
 import org.springframework.http.MediaType;
+import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.DefaultUriBuilderFactory;
 
@@ -25,6 +26,7 @@ public class RestTemplateFactoryImpl implements RestTemplateFactory {
     public RestTemplate getRestTemplate() {
         RestTemplate restTemplate = new RestTemplate();
         restTemplate.setUriTemplateHandler(new DefaultUriBuilderFactory(String.format(BASE_URI_FORMAT, parameters.getHostname())));
+        restTemplate.setRequestFactory(new HttpComponentsClientHttpRequestFactory());
         restTemplate.getInterceptors().add(new HttpHeaderInterceptor("Content-Type", MediaType.APPLICATION_JSON_VALUE));
         restTemplate.getInterceptors().add(new HttpHeaderInterceptor("X-API-KEY", parameters.getApiKey()));
         restTemplate.getInterceptors().add(new HttpHeaderInterceptor("X-Total-Count", "true"));

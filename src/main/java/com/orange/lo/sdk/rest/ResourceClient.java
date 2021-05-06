@@ -57,4 +57,8 @@ public abstract class ResourceClient {
     protected <T> void update(String uri, T body) {
         restTemplate.exchange(uri, HttpMethod.PUT, new HttpEntity<T>(body), Void.class);
     }
+    
+    protected <T> void edit(String uri, T body) {
+        restTemplate.exchange(uri, HttpMethod.PATCH, new HttpEntity<T>(body), Void.class);
+    }
 }

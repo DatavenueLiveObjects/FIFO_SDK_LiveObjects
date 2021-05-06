@@ -68,4 +68,10 @@ public class Inventory extends ResourceClient {
     	Device device = new Device().withId(deviceId).withGroup(group);
     	return createDevice(device);
     } 
+    
+    public void updateDevice(Device device) {
+    	String uri = UriComponentsBuilder.fromUriString(DEVICES_ENDPOINT).pathSegment(device.getId()) //
+    			.build().toUriString();
+    	edit(uri, device);
+    }
 }
