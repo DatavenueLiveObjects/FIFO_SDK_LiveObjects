@@ -33,7 +33,8 @@ public class DataManagementExtConnector extends AbstractDataManagementMqtt {
     public void connect() {
         super.connect();
         LOApiClientParameters parameters = getParameters();
-        if (parameters.getDataManagementExtConnectorCommandCallback() != null) {
+        DataManagementExtConnectorCommandCallback callback = parameters.getDataManagementExtConnectorCommandCallback();
+        if (thereIsA(callback)) {
             receiveCommands();
         }
     }
@@ -66,7 +67,7 @@ public class DataManagementExtConnector extends AbstractDataManagementMqtt {
         }
     }
 
-    private void sendCommandResponse(CommandResponse commandResponse) {
+    public void sendCommandResponse(CommandResponse commandResponse) {
         MqttMessage msg = prepareMqttMessage(commandResponse);
         LOApiClientParameters parameters = getParameters();
         publish(parameters.getExtConnectorCommandResponseTopic(), msg);
@@ -83,7 +84,7 @@ public class DataManagementExtConnector extends AbstractDataManagementMqtt {
         LOApiClientParameters parameters = getParameters();
         DataManagementExtConnectorCommandCallback dataManagementExternalConnectorCommandCallback = parameters.getDataManagementExtConnectorCommandCallback();
         Object response = dataManagementExternalConnectorCommandCallback.onCommandRequest(commandRequest);
-        if (!isAckModeNone(commandRequest)) {
+        if (!isAckModeNone(commandRequest) && thereIsA(response)) {
             CommandResponse commandResponse = new CommandResponse(commandRequest.getId(), commandRequest.getNodeId());
             commandResponse.setResponse(response);
             sendCommandResponse(commandResponse);
@@ -93,6 +94,10 @@ public class DataManagementExtConnector extends AbstractDataManagementMqtt {
     private boolean isAckModeNone(CommandRequest commandRequest) {
         AcknowledgementMode ackMode = commandRequest.getAckMode();
         return AcknowledgementMode.NONE.equals(ackMode);
+    }
+
+    private boolean thereIsA(Object o) {
+        return o != null;
     }
 
     @Override

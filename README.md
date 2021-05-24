@@ -178,7 +178,14 @@ public class MyDataManagementExtConnectorCommandCallback implements DataManageme
     }
 }
 ```
-If acknowledgement mode isn't set to `NONE`, a command response with the request’s id will be published automatically. Object returned by `onMessage` method will be used as value of response field inside command response. If you want the response field to be blank, return `null`.
+If acknowledgement mode isn't set to `NONE`, the object returned by `onMessage` method will be used as value of response field inside command response. In this case the command response will be published automatically. If you do not wish to publish the response here, return `null` and the response will not be published.  
+If you want to publish the command response yourself, you can use the following code:
+
+```
+CommandResponse commandResponse = new CommandResponse(commandRequest.getId(), commandRequest.getNodeId());
+commandResponse.setResponse(yourResponse);
+dataManagementExtConnector.sendCommandResponse(commandResponse);
+```
 
 Use that prepared `DataManagementExtConnectorCommandCallback` to create an `LOApiClient`:
 ```

@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.orange.lo.sdk.LOApiClientParameters;
 import com.orange.lo.sdk.externalconnector.exceptions.ExtConnectorException;
+import com.orange.lo.sdk.externalconnector.model.CommandResponse;
 import com.orange.lo.sdk.externalconnector.model.DataMessage;
 import com.orange.lo.sdk.externalconnector.model.Metadata;
 import com.orange.lo.sdk.externalconnector.model.NodeStatus;
@@ -22,10 +23,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Arrays;
 
-import static com.orange.lo.sdk.LOApiClientParameters.DEFAULT_EXT_CONNECTOR_COMMAND_REQUEST_TOPIC;
-import static com.orange.lo.sdk.LOApiClientParameters.DEFAULT_EXT_CONNECTOR_DATA_TOPIC_TEMPLATE;
-import static com.orange.lo.sdk.LOApiClientParameters.DEFAULT_EXT_CONNECTOR_STATUS_TOPIC_TEMPLATE;
-import static com.orange.lo.sdk.LOApiClientParameters.DEFAULT_MESSAGE_QOS;
+import static com.orange.lo.sdk.LOApiClientParameters.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.ArgumentMatchers.eq;
@@ -62,6 +60,21 @@ class DataManagementExtConnectorTest {
         dataManagementExtConnector.disconnect();
 
         verify(mqttClient, times(1)).disconnect();
+    }
+
+    @Test
+    void shouldPublishMessageWhenCommandResponseIsSentManually() throws MqttException {
+        parameters = LOApiClientParameters.builder()
+                .apiKey(API_KEY)
+                .dataManagementExtConnectorCommandCallback(commandRequest -> null)
+                .build();
+        CommandResponse commandResponse = new CommandResponse("commandRequestId", "nodeId");
+
+        dataManagementExtConnector = new DataManagementExtConnector(parameters, () -> mqttClient);
+        dataManagementExtConnector.connect();
+        dataManagementExtConnector.sendCommandResponse(commandResponse);
+
+        verify(mqttClient, times(1)).publish(eq(DEFAULT_EXT_CONNECTOR_COMMAND_RESPONSE_TOPIC), any(MqttMessage.class));
     }
 
     @Test
