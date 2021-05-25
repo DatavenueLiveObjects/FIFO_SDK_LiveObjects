@@ -14,12 +14,14 @@ import com.orange.lo.sdk.mqtt.MqttClientFactoryImpl;
 import com.orange.lo.sdk.rest.RestTemplateFactoryImpl;
 import com.orange.lo.sdk.rest.apikeys.ApiKeys;
 import com.orange.lo.sdk.rest.devicemanagement.DeviceManagement;
+import com.orange.lo.sdk.rest.userauthentication.UserAuthentication;
 
 public class LOApiClient {
 
     private DeviceManagement deviceManagement;
     private DataManagementFifo dataManagementFifo;
     private DataManagementExtConnector dataManagementExtConnector;
+    private UserAuthentication userAuthentication;
     private ApiKeys apiKeys;
 
 	public LOApiClient(LOApiClientParameters parameters) {
@@ -29,6 +31,7 @@ public class LOApiClient {
         this.dataManagementFifo = new DataManagementFifo(parameters, mqttClientFactory);
         this.dataManagementExtConnector = new DataManagementExtConnector(parameters, mqttClientFactory);
         this.apiKeys = new ApiKeys(restTemplateFactoryImpl);
+        this.userAuthentication = new UserAuthentication(restTemplateFactoryImpl);
     }
 
     public DeviceManagement getDeviceManagement() {
@@ -42,8 +45,12 @@ public class LOApiClient {
     public DataManagementExtConnector getDataManagementExtConnector() {
         return dataManagementExtConnector;
     }
-    
+
     public ApiKeys getApiKeys() {
 		return apiKeys;
 	}
+
+    public UserAuthentication getUserAuthentication() {
+        return userAuthentication;
+    }
 }
