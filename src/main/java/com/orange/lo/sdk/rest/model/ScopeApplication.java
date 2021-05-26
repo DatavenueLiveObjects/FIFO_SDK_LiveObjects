@@ -29,20 +29,16 @@ public class ScopeApplication {
   }
 
   @Override
-  public boolean equals(java.lang.Object o) {
-    if (this == o) {
-      return true;
-    }
-    if (o == null || getClass() != o.getClass()) {
-      return false;
-    }
-    ScopeApplication scopeApplication = (ScopeApplication) o;
-    return Objects.equals(this.fifos, scopeApplication.fifos);
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (!(o instanceof ScopeApplication)) return false;
+    ScopeApplication that = (ScopeApplication) o;
+    return Objects.equals(getFifos(), that.getFifos());
   }
 
   @Override
   public int hashCode() {
-    return java.util.Objects.hash(fifos);
+    return Objects.hash(getFifos());
   }
 
   @Override

@@ -33,19 +33,15 @@ public class Resource {
     }
 
 	@Override
-	public int hashCode() {
-		return Objects.hash(available);
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (!(o instanceof Resource)) return false;
+		Resource resource = (Resource) o;
+		return Objects.equals(getAvailable(), resource.getAvailable());
 	}
 
 	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (!(obj instanceof Resource))
-			return false;
-		Resource other = (Resource) obj;
-		return Objects.equals(available, other.available);
+	public int hashCode() {
+		return Objects.hash(getAvailable());
 	}
 }

@@ -55,7 +55,7 @@ public class CommandHistory {
         return this;
     }
 
-    public CommandDeliveryStatus getDeliveryStatus() {
+    public CommandDeliveryStatus getCommandDeliveryStatus() {
         return commandDeliveryStatus;
     }
 
@@ -89,15 +89,17 @@ public class CommandHistory {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (!(o instanceof CommandHistory)) return false;
         CommandHistory that = (CommandHistory) o;
-        return commandDeliveryStatus == that.commandDeliveryStatus && Objects.equals(errorCode, that.errorCode) && Objects.equals(nodeId, that.nodeId) && status == that.status && Objects.equals(timestamp, that.timestamp);
+        return getCommandDeliveryStatus() == that.getCommandDeliveryStatus()
+                && Objects.equals(getErrorCode(), that.getErrorCode())
+                && Objects.equals(getNodeId(), that.getNodeId())
+                && getStatus() == that.getStatus()
+                && Objects.equals(getTimestamp(), that.getTimestamp());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(commandDeliveryStatus, errorCode, nodeId, status, timestamp);
+        return Objects.hash(getCommandDeliveryStatus(), getErrorCode(), getNodeId(), getStatus(), getTimestamp());
     }
-
-
 }

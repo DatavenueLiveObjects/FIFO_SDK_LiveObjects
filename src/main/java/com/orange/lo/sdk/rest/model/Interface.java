@@ -141,25 +141,26 @@ public class Interface {
         return "Interface [connector=" + connector + ", nodeId=" + nodeId + ", enabled=" + enabled + ", status=" + status + ", definition=" + definition + ", capabilities=" + capabilities + ", created=" + created + ", updated=" + updated + ", lastContact=" + lastContact + ", activity=" + activity + "]";
     }
 
-	@Override
-	public int hashCode() {
-		return Objects.hash(activity, capabilities, connector, created, definition, enabled, lastContact, nodeId,
-				status, updated);
-	}
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Interface)) return false;
+        Interface that = (Interface) o;
+        return Objects.equals(getConnector(), that.getConnector())
+                && Objects.equals(getNodeId(), that.getNodeId())
+                && Objects.equals(getEnabled(), that.getEnabled())
+                && Objects.equals(getStatus(), that.getStatus())
+                && Objects.equals(getDefinition(), that.getDefinition())
+                && Objects.equals(getCapabilities(), that.getCapabilities())
+                && Objects.equals(getCreated(), that.getCreated())
+                && Objects.equals(getUpdated(), that.getUpdated())
+                && Objects.equals(getLastContact(), that.getLastContact())
+                && Objects.equals(getActivity(), that.getActivity());
+    }
 
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (!(obj instanceof Interface))
-			return false;
-		Interface other = (Interface) obj;
-		return Objects.equals(activity, other.activity) && Objects.equals(capabilities, other.capabilities)
-				&& Objects.equals(connector, other.connector) && Objects.equals(created, other.created)
-				&& Objects.equals(definition, other.definition) && Objects.equals(enabled, other.enabled)
-				&& Objects.equals(lastContact, other.lastContact) && Objects.equals(nodeId, other.nodeId)
-				&& Objects.equals(status, other.status) && Objects.equals(updated, other.updated);
-	}
+    @Override
+    public int hashCode() {
+        return Objects.hash(getConnector(), getNodeId(), getEnabled(), getStatus(), getDefinition(), getCapabilities(),
+                getCreated(), getUpdated(), getLastContact(), getActivity());
+    }
 }

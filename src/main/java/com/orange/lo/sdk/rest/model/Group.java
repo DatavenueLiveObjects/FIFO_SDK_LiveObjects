@@ -105,22 +105,22 @@ public class Group {
     }
 
 	@Override
-	public int hashCode() {
-		return Objects.hash(created, description, id, parentId, path, pathNode, updated);
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (!(o instanceof Group)) return false;
+		Group group = (Group) o;
+		return Objects.equals(getId(), group.getId())
+				&& Objects.equals(getPathNode(), group.getPathNode())
+				&& Objects.equals(getPath(), group.getPath())
+				&& Objects.equals(getParentId(), group.getParentId())
+				&& Objects.equals(getDescription(), group.getDescription())
+				&& Objects.equals(getCreated(), group.getCreated())
+				&& Objects.equals(getUpdated(), group.getUpdated());
 	}
 
 	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (!(obj instanceof Group))
-			return false;
-		Group other = (Group) obj;
-		return Objects.equals(created, other.created) && Objects.equals(description, other.description)
-				&& Objects.equals(id, other.id) && Objects.equals(parentId, other.parentId)
-				&& Objects.equals(path, other.path) && Objects.equals(pathNode, other.pathNode)
-				&& Objects.equals(updated, other.updated);
-	}   
+	public int hashCode() {
+		return Objects.hash(getId(), getPathNode(), getPath(), getParentId(), getDescription(), getCreated(),
+				getUpdated());
+	}
 }

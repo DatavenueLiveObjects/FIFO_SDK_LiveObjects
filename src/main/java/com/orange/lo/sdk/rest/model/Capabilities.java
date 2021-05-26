@@ -57,21 +57,17 @@ public class Capabilities {
     }
 
     @Override
-    public int hashCode() {
-        return Objects.hash(command, configuration, resource);
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Capabilities)) return false;
+        Capabilities that = (Capabilities) o;
+        return Objects.equals(getConfiguration(), that.getConfiguration())
+                && Objects.equals(getCommand(), that.getCommand())
+                && Objects.equals(getResource(), that.getResource());
     }
 
     @Override
-    public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null)
-            return false;
-        if (!(obj instanceof Capabilities))
-            return false;
-        Capabilities other = (Capabilities) obj;
-        return Objects.equals(command, other.command)
-                && Objects.equals(configuration, other.configuration)
-                && Objects.equals(resource, other.resource);
+    public int hashCode() {
+        return Objects.hash(getConfiguration(), getCommand(), getResource());
     }
 }

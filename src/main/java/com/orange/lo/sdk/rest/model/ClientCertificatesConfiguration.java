@@ -41,23 +41,16 @@ public class ClientCertificatesConfiguration {
 	}
 
 	@Override
-	public int hashCode() {
-		return Objects.hash(caCertIds, required);
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (!(o instanceof ClientCertificatesConfiguration)) return false;
+		ClientCertificatesConfiguration that = (ClientCertificatesConfiguration) o;
+		return Objects.equals(getCaCertIds(), that.getCaCertIds()) && Objects.equals(isRequired(), that.isRequired());
 	}
 
 	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) {
-			return true;
-		}
-		if (obj == null) {
-			return false;
-		}
-		if (!(obj instanceof ClientCertificatesConfiguration)) {
-			return false;
-		}
-		ClientCertificatesConfiguration other = (ClientCertificatesConfiguration) obj;
-		return Objects.equals(caCertIds, other.caCertIds) && Objects.equals(required, other.required);
+	public int hashCode() {
+		return Objects.hash(getCaCertIds(), isRequired());
 	}
 
 	@Override

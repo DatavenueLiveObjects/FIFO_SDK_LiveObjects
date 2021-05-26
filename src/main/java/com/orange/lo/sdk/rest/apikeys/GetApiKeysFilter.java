@@ -2,6 +2,8 @@ package com.orange.lo.sdk.rest.apikeys;
 
 import com.orange.lo.sdk.rest.Filter;
 
+import java.util.Objects;
+
 public class GetApiKeysFilter implements Filter{
 
 	private Integer page;
@@ -24,4 +26,18 @@ public class GetApiKeysFilter implements Filter{
 	public Integer getSize() {
 		return size;
 	}
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof GetApiKeysFilter)) return false;
+        GetApiKeysFilter that = (GetApiKeysFilter) o;
+        return Objects.equals(getPage(), that.getPage())
+                && Objects.equals(getSize(), that.getSize());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getPage(), getSize());
+    }
 }

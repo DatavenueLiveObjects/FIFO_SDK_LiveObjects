@@ -79,17 +79,17 @@ public final class GetCommandsFilter implements Filter {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (!(o instanceof GetCommandsFilter)) return false;
         GetCommandsFilter that = (GetCommandsFilter) o;
-        return Objects.equals(from, that.from)
-                && Objects.equals(limit, that.limit)
-                && Objects.equals(offset, that.offset)
-                && Objects.equals(sort, that.sort)
-                && Objects.equals(to, that.to);
+        return Objects.equals(getFrom(), that.getFrom())
+                && Objects.equals(getLimit(), that.getLimit())
+                && Objects.equals(getOffset(), that.getOffset())
+                && Objects.equals(getSort(), that.getSort())
+                && Objects.equals(getTo(), that.getTo());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(from, limit, offset, sort, to);
+        return Objects.hash(getFrom(), getLimit(), getOffset(), getSort(), getTo());
     }
 }

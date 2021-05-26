@@ -76,13 +76,16 @@ public class CommandPolicy {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (!(o instanceof CommandPolicy)) return false;
         CommandPolicy that = (CommandPolicy) o;
-        return ackMode == that.ackMode && Objects.equals(ackTimeoutInSeconds, that.ackTimeoutInSeconds) && Objects.equals(attempts, that.attempts) && Objects.equals(expirationInSeconds, that.expirationInSeconds);
+        return getAckMode() == that.getAckMode()
+                && Objects.equals(getAckTimeoutInSeconds(), that.getAckTimeoutInSeconds())
+                && Objects.equals(getAttempts(), that.getAttempts())
+                && Objects.equals(getExpirationInSeconds(), that.getExpirationInSeconds());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(ackMode, ackTimeoutInSeconds, attempts, expirationInSeconds);
+        return Objects.hash(getAckMode(), getAckTimeoutInSeconds(), getAttempts(), getExpirationInSeconds());
     }
 }

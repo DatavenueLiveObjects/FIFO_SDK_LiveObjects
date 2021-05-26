@@ -104,24 +104,23 @@ public class Activity {
         return "Activity [apiKeyId=" + apiKeyId + ", mqttVersion=" + mqttVersion + ", mqttUsername=" + mqttUsername + ", mqttTimeout=" + mqttTimeout + ", remoteAddress=" + remoteAddress + ", lastSessionStartTime=" + lastSessionStartTime + ", lastSessionEndTime=" + lastSessionEndTime + "]";
     }
 
-	@Override
-	public int hashCode() {
-		return Objects.hash(apiKeyId, lastSessionEndTime, lastSessionStartTime, mqttTimeout, mqttUsername, mqttVersion,
-				remoteAddress);
-	}
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Activity)) return false;
+        Activity activity = (Activity) o;
+        return Objects.equals(getApiKeyId(), activity.getApiKeyId())
+                && Objects.equals(getMqttVersion(), activity.getMqttVersion())
+                && Objects.equals(getMqttUsername(), activity.getMqttUsername())
+                && Objects.equals(getMqttTimeout(), activity.getMqttTimeout())
+                && Objects.equals(getRemoteAddress(), activity.getRemoteAddress())
+                && Objects.equals(getLastSessionStartTime(), activity.getLastSessionStartTime())
+                && Objects.equals(getLastSessionEndTime(), activity.getLastSessionEndTime());
+    }
 
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (!(obj instanceof Activity))
-			return false;
-		Activity other = (Activity) obj;
-		return Objects.equals(apiKeyId, other.apiKeyId) && Objects.equals(lastSessionEndTime, other.lastSessionEndTime)
-				&& Objects.equals(lastSessionStartTime, other.lastSessionStartTime)
-				&& Objects.equals(mqttTimeout, other.mqttTimeout) && Objects.equals(mqttUsername, other.mqttUsername)
-				&& Objects.equals(mqttVersion, other.mqttVersion) && Objects.equals(remoteAddress, other.remoteAddress);
-	}
+    @Override
+    public int hashCode() {
+        return Objects.hash(getApiKeyId(), getMqttVersion(), getMqttUsername(), getMqttTimeout(), getRemoteAddress(),
+                getLastSessionStartTime(), getLastSessionEndTime());
+    }
 }

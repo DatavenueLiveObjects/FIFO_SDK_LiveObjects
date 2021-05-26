@@ -279,37 +279,42 @@ public class ApiKey {
 		return value;
 	}
 
-	@Override
-	public int hashCode() {
-		return Objects.hash(active, clientCert, creationTs, debugModeEndTs, description, expired, from, id, label,
-				lastActivity, masterKey, nonce, parentId, rateLimit, roles, scope, sessionKey, sessionTTL, tenantId, to,
-				userId, value);
-	}
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof ApiKey)) return false;
+        ApiKey apiKey = (ApiKey) o;
+        return Objects.equals(isActive(), apiKey.isActive())
+                && Objects.equals(getClientCert(), apiKey.getClientCert())
+                && Objects.equals(getCreationTs(), apiKey.getCreationTs())
+                && Objects.equals(getDebugModeEndTs(), apiKey.getDebugModeEndTs())
+                && Objects.equals(getDescription(), apiKey.getDescription())
+                && Objects.equals(isExpired(), apiKey.isExpired())
+                && Objects.equals(getFrom(), apiKey.getFrom())
+                && Objects.equals(getId(), apiKey.getId())
+                && Objects.equals(getLabel(), apiKey.getLabel())
+                && Objects.equals(getLastActivity(), apiKey.getLastActivity())
+                && Objects.equals(isMasterKey(), apiKey.isMasterKey())
+                && Objects.equals(getNonce(), apiKey.getNonce())
+                && Objects.equals(getParentId(), apiKey.getParentId())
+                && Objects.equals(getRateLimit(), apiKey.getRateLimit())
+                && Objects.equals(getRoles(), apiKey.getRoles())
+                && Objects.equals(getScope(), apiKey.getScope())
+                && Objects.equals(isSessionKey(), apiKey.isSessionKey())
+                && Objects.equals(getSessionTTL(), apiKey.getSessionTTL())
+                && Objects.equals(getTenantId(), apiKey.getTenantId())
+                && Objects.equals(getTo(), apiKey.getTo())
+                && Objects.equals(getUserId(), apiKey.getUserId())
+                && Objects.equals(getValue(), apiKey.getValue());
+    }
 
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) {
-			return true;
-		}
-		if (obj == null) {
-			return false;
-		}
-		if (!(obj instanceof ApiKey)) {
-			return false;
-		}
-		ApiKey other = (ApiKey) obj;
-		return Objects.equals(active, other.active) && Objects.equals(clientCert, other.clientCert)
-				&& Objects.equals(creationTs, other.creationTs) && Objects.equals(debugModeEndTs, other.debugModeEndTs)
-				&& Objects.equals(description, other.description) && Objects.equals(expired, other.expired)
-				&& Objects.equals(from, other.from) && Objects.equals(id, other.id)
-				&& Objects.equals(label, other.label) && Objects.equals(lastActivity, other.lastActivity)
-				&& Objects.equals(masterKey, other.masterKey) && Objects.equals(nonce, other.nonce)
-				&& Objects.equals(parentId, other.parentId) && Objects.equals(rateLimit, other.rateLimit)
-				&& Objects.equals(roles, other.roles) && Objects.equals(scope, other.scope)
-				&& Objects.equals(sessionKey, other.sessionKey) && Objects.equals(sessionTTL, other.sessionTTL)
-				&& Objects.equals(tenantId, other.tenantId) && Objects.equals(to, other.to)
-				&& Objects.equals(userId, other.userId) && Objects.equals(value, other.value);
-	}
+    @Override
+    public int hashCode() {
+        return Objects.hash(isActive(), getClientCert(), getCreationTs(), getDebugModeEndTs(), getDescription(),
+                isExpired(), getFrom(), getId(), getLabel(), getLastActivity(), isMasterKey(), getNonce(),
+                getParentId(), getRateLimit(), getRoles(), getScope(), isSessionKey(), getSessionTTL(), getTenantId(),
+                getTo(), getUserId(), getValue());
+    }
 
 	@Override
 	public String toString() {

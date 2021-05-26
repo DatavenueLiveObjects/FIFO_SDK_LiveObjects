@@ -52,13 +52,13 @@ public class CommandRequestValue {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (!(o instanceof CommandRequestValue)) return false;
         CommandRequestValue that = (CommandRequestValue) o;
-        return Objects.equals(req, that.req) && Objects.equals(arg, that.arg);
+        return Objects.equals(getReq(), that.getReq()) && Objects.equals(getArg(), that.getArg());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(req, arg);
+        return Objects.hash(getReq(), getArg());
     }
 }
