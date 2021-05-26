@@ -50,13 +50,13 @@ public class CommandAddRequest {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (!(o instanceof CommandAddRequest)) return false;
         CommandAddRequest that = (CommandAddRequest) o;
-        return Objects.equals(policy, that.policy) && Objects.equals(request, that.request);
+        return Objects.equals(getPolicy(), that.getPolicy()) && Objects.equals(getRequest(), that.getRequest());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(policy, request);
+        return Objects.hash(getPolicy(), getRequest());
     }
 }

@@ -144,25 +144,26 @@ public class Device {
         return "Device [id=" + id + ", name=" + name + ", tags=" + tags + ", properties=" + properties + ", group=" + group + ", interfaces=" + interfaces + ", defaultDataStreamId=" + defaultDataStreamId + ", created=" + created + ", updated=" + updated + ", activityState=" + activityState + "]";
     }
 
-	@Override
-	public int hashCode() {
-		return Objects.hash(activityState, created, defaultDataStreamId, group, id, interfaces, name, properties, tags,
-				updated);
-	}
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Device)) return false;
+        Device device = (Device) o;
+        return Objects.equals(getId(), device.getId())
+                && Objects.equals(getName(), device.getName())
+                && Objects.equals(getTags(), device.getTags())
+                && Objects.equals(getProperties(), device.getProperties())
+                && Objects.equals(getGroup(), device.getGroup())
+                && Objects.equals(getInterfaces(), device.getInterfaces())
+                && Objects.equals(getDefaultDataStreamId(), device.getDefaultDataStreamId())
+                && Objects.equals(getCreated(), device.getCreated())
+                && Objects.equals(getUpdated(), device.getUpdated())
+                && Objects.equals(getActivityState(), device.getActivityState());
+    }
 
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (!(obj instanceof Device))
-			return false;
-		Device other = (Device) obj;
-		return Objects.equals(activityState, other.activityState) && Objects.equals(created, other.created)
-				&& Objects.equals(defaultDataStreamId, other.defaultDataStreamId) && Objects.equals(group, other.group)
-				&& Objects.equals(id, other.id) && Objects.equals(interfaces, other.interfaces)
-				&& Objects.equals(name, other.name) && Objects.equals(properties, other.properties)
-				&& Objects.equals(tags, other.tags) && Objects.equals(updated, other.updated);
-	}
+    @Override
+    public int hashCode() {
+        return Objects.hash(getId(), getName(), getTags(), getProperties(), getGroup(), getInterfaces(),
+                getDefaultDataStreamId(), getCreated(), getUpdated(), getActivityState());
+    }
 }

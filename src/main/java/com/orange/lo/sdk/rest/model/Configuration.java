@@ -33,19 +33,15 @@ public class Configuration {
     }
 
 	@Override
-	public int hashCode() {
-		return Objects.hash(available);
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (!(o instanceof Configuration)) return false;
+		Configuration that = (Configuration) o;
+		return Objects.equals(getAvailable(), that.getAvailable());
 	}
 
 	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (!(obj instanceof Configuration))
-			return false;
-		Configuration other = (Configuration) obj;
-		return Objects.equals(available, other.available);
+	public int hashCode() {
+		return Objects.hash(getAvailable());
 	}
 }

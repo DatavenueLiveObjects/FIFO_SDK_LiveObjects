@@ -41,13 +41,13 @@ public class CommandResponse {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (!(o instanceof CommandResponse)) return false;
         CommandResponse that = (CommandResponse) o;
-        return Objects.equals(value, that.value);
+        return Objects.equals(getValue(), that.getValue());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(value);
+        return Objects.hash(getValue());
     }
 }

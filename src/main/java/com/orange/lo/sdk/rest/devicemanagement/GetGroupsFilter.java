@@ -9,6 +9,8 @@ package com.orange.lo.sdk.rest.devicemanagement;
 
 import com.orange.lo.sdk.rest.Filter;
 
+import java.util.Objects;
+
 public final class GetGroupsFilter implements Filter{
 
     private Integer limit;
@@ -45,5 +47,20 @@ public final class GetGroupsFilter implements Filter{
     @Override
     public String toString() {
         return "GetGroupsFilter [limit=" + limit + ", offset=" + offset + ", parentId=" + parentId + "]";
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof GetGroupsFilter)) return false;
+        GetGroupsFilter that = (GetGroupsFilter) o;
+        return Objects.equals(getLimit(), that.getLimit())
+                && Objects.equals(getOffset(), that.getOffset())
+                && Objects.equals(getParentId(), that.getParentId());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getLimit(), getOffset(), getParentId());
     }
 }

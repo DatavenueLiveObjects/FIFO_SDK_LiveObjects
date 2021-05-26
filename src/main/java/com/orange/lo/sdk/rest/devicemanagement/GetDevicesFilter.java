@@ -9,6 +9,8 @@ package com.orange.lo.sdk.rest.devicemanagement;
 
 import com.orange.lo.sdk.rest.Filter;
 
+import java.util.Objects;
+
 public final class GetDevicesFilter implements Filter{
 
     private Integer limit;
@@ -165,5 +167,33 @@ public final class GetDevicesFilter implements Filter{
     @Override
     public String toString() {
         return "GetDevicesFilter [limit=" + limit + ", offset=" + offset + ", sort=" + sort + ", id=" + id + ", groupPath=" + groupPath + ", groupId=" + groupId + ", name=" + name + ", tags=" + tags + ", connectors=" + connectors + ", interfacesNodeId=" + interfacesNodeId + ", interfacesEnabled=" + interfacesEnabled + ", interfacesStatus=" + interfacesStatus + ", activityStates=" + activityStates + ", filterQuery=" + filterQuery + ", fields=" + fields + "]";
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof GetDevicesFilter)) return false;
+        GetDevicesFilter that = (GetDevicesFilter) o;
+        return Objects.equals(getLimit(), that.getLimit())
+                && Objects.equals(getOffset(), that.getOffset())
+                && Objects.equals(getSort(), that.getSort())
+                && Objects.equals(getId(), that.getId())
+                && Objects.equals(getGroupPath(), that.getGroupPath())
+                && Objects.equals(getGroupId(), that.getGroupId())
+                && Objects.equals(getName(), that.getName())
+                && Objects.equals(getTags(), that.getTags())
+                && Objects.equals(getConnectors(), that.getConnectors())
+                && Objects.equals(getInterfacesNodeId(), that.getInterfacesNodeId())
+                && Objects.equals(getInterfacesEnabled(), that.getInterfacesEnabled())
+                && Objects.equals(getInterfacesStatus(), that.getInterfacesStatus())
+                && Objects.equals(getActivityStates(), that.getActivityStates())
+                && Objects.equals(getFilterQuery(), that.getFilterQuery())
+                && Objects.equals(getFields(), that.getFields());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getLimit(), getOffset(), getSort(), getId(), getGroupPath(), getGroupId(), getName(),
+                getTags(), getConnectors(), getInterfacesNodeId(), getInterfacesEnabled(), getInterfacesStatus(), getActivityStates(), getFilterQuery(), getFields());
     }
 }

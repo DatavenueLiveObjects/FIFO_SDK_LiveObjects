@@ -44,20 +44,16 @@ public class InterfaceCapability {
         return "Command [available=" + available + ", version=" + version + "]";
     }
 
-	@Override
-	public int hashCode() {
-		return Objects.hash(available, version);
-	}
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof InterfaceCapability)) return false;
+        InterfaceCapability that = (InterfaceCapability) o;
+        return Objects.equals(getAvailable(), that.getAvailable()) && Objects.equals(getVersion(), that.getVersion());
+    }
 
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (!(obj instanceof InterfaceCapability))
-			return false;
-		InterfaceCapability other = (InterfaceCapability) obj;
-		return Objects.equals(available, other.available) && Objects.equals(version, other.version);
-	}
+    @Override
+    public int hashCode() {
+        return Objects.hash(getAvailable(), getVersion());
+    }
 }

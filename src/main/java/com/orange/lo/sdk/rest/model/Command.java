@@ -149,6 +149,10 @@ public class Command {
         return updated;
     }
 
+    public CommandDeliveryStatus getCommandDeliveryStatus() {
+        return commandDeliveryStatus;
+    }
+
     @Override
     public String toString() {
         return "Command{" +
@@ -169,22 +173,24 @@ public class Command {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Command that = (Command) o;
-        return commandDeliveryStatus == that.commandDeliveryStatus
-                && Objects.equals(created, that.created)
-                && Objects.equals(errorCode, that.errorCode)
-                && Objects.equals(history, that.history)
-                && Objects.equals(id, that.id) && Objects.equals(policy, that.policy)
-                && Objects.equals(request, that.request)
-                && Objects.equals(response, that.response)
-                && status == that.status
-                && Objects.equals(targetDeviceId, that.targetDeviceId)
-                && Objects.equals(updated, that.updated);
+        if (!(o instanceof Command)) return false;
+        Command command = (Command) o;
+        return getCommandDeliveryStatus() == command.getCommandDeliveryStatus()
+                && Objects.equals(getCreated(), command.getCreated())
+                && Objects.equals(getErrorCode(), command.getErrorCode())
+                && Objects.equals(getHistory(), command.getHistory())
+                && Objects.equals(getId(), command.getId())
+                && Objects.equals(getPolicy(), command.getPolicy())
+                && Objects.equals(getRequest(), command.getRequest())
+                && Objects.equals(getResponse(), command.getResponse())
+                && getStatus() == command.getStatus()
+                && Objects.equals(getTargetDeviceId(), command.getTargetDeviceId())
+                && Objects.equals(getUpdated(), command.getUpdated());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(commandDeliveryStatus, created, errorCode, history, id, policy, request, response, status, targetDeviceId, updated);
+        return Objects.hash(getCommandDeliveryStatus(), getCreated(), getErrorCode(), getHistory(), getId(),
+                getPolicy(), getRequest(), getResponse(), getStatus(), getTargetDeviceId(), getUpdated());
     }
 }

@@ -79,28 +79,22 @@ public class RateLimit {
 	}
 
 	@Override
-	public int hashCode() {
-		return Objects.hash(httpMaxCalls, httpWindowSize, mqttBridgeMaxMessages, mqttBridgeWindowSize,
-				mqttDeviceMaxMessages, mqttDeviceWindowSize);
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (!(o instanceof RateLimit)) return false;
+		RateLimit rateLimit = (RateLimit) o;
+		return Objects.equals(getHttpMaxCalls(), rateLimit.getHttpMaxCalls())
+				&& Objects.equals(getHttpWindowSize(), rateLimit.getHttpWindowSize())
+				&& Objects.equals(getMqttBridgeMaxMessages(), rateLimit.getMqttBridgeMaxMessages())
+				&& Objects.equals(getMqttBridgeWindowSize(), rateLimit.getMqttBridgeWindowSize())
+				&& Objects.equals(getMqttDeviceMaxMessages(), rateLimit.getMqttDeviceMaxMessages())
+				&& Objects.equals(getMqttDeviceWindowSize(), rateLimit.getMqttDeviceWindowSize());
 	}
 
 	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) {
-			return true;
-		}
-		if (obj == null) {
-			return false;
-		}
-		if (!(obj instanceof RateLimit)) {
-			return false;
-		}
-		RateLimit other = (RateLimit) obj;
-		return Objects.equals(httpMaxCalls, other.httpMaxCalls) && Objects.equals(httpWindowSize, other.httpWindowSize)
-				&& Objects.equals(mqttBridgeMaxMessages, other.mqttBridgeMaxMessages)
-				&& Objects.equals(mqttBridgeWindowSize, other.mqttBridgeWindowSize)
-				&& Objects.equals(mqttDeviceMaxMessages, other.mqttDeviceMaxMessages)
-				&& Objects.equals(mqttDeviceWindowSize, other.mqttDeviceWindowSize);
+	public int hashCode() {
+		return Objects.hash(getHttpMaxCalls(), getHttpWindowSize(), getMqttBridgeMaxMessages(),
+				getMqttBridgeWindowSize(), getMqttDeviceMaxMessages(), getMqttDeviceWindowSize());
 	}
 
 	@Override

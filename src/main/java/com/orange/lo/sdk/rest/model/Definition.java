@@ -33,19 +33,15 @@ public class Definition {
     }
 
 	@Override
-	public int hashCode() {
-		return Objects.hash(clientId);
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (!(o instanceof Definition)) return false;
+		Definition that = (Definition) o;
+		return Objects.equals(getClientId(), that.getClientId());
 	}
 
 	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (!(obj instanceof Definition))
-			return false;
-		Definition other = (Definition) obj;
-		return Objects.equals(clientId, other.clientId);
-	}    
+	public int hashCode() {
+		return Objects.hash(getClientId());
+	}
 }
