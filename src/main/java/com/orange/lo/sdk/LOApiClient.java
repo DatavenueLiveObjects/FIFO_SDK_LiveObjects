@@ -27,7 +27,7 @@ public class LOApiClient {
 	public LOApiClient(LOApiClientParameters parameters) {
     	RestTemplateFactoryImpl restTemplateFactoryImpl = new RestTemplateFactoryImpl(parameters);
         this.deviceManagement = new DeviceManagement(restTemplateFactoryImpl);
-        MqttClientFactory mqttClientFactory = new MqttClientFactoryImpl(parameters.getHostname(), parameters.getMqttPersistenceDataDir());
+        MqttClientFactory mqttClientFactory = new MqttClientFactoryImpl(parameters.getHostname(), parameters.getMqttPersistenceDataDir(), parameters.getConnectorType(), parameters.getConnectorVersion());
         this.dataManagementFifo = new DataManagementFifo(parameters, mqttClientFactory);
         this.dataManagementExtConnector = new DataManagementExtConnector(parameters, mqttClientFactory);
         this.apiKeys = new ApiKeys(restTemplateFactoryImpl);

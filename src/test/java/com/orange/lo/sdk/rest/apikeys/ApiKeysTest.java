@@ -1,8 +1,13 @@
 package com.orange.lo.sdk.rest.apikeys;
 
-import com.orange.lo.sdk.rest.model.ApiKey;
-import com.orange.lo.sdk.rest.model.Device;
-import com.orange.lo.sdk.rest.model.V0Response;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
+import java.util.List;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -15,15 +20,8 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import com.orange.lo.sdk.rest.model.ApiKey;
+import com.orange.lo.sdk.rest.model.V0Response;
 
 @ExtendWith(MockitoExtension.class)
 class ApiKeysTest {

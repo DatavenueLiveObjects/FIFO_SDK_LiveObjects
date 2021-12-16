@@ -28,7 +28,9 @@ public final class LOApiClientParameters {
     public static final String DEFAULT_EXT_CONNECTOR_COMMAND_RESPONSE_TOPIC = "connector/v1/responses/command";
     public static final String DEFAULT_EXT_CONNECTOR_DATA_TOPIC_TEMPLATE = "connector/v1/nodes/%s/data";
     public static final String DEFAULT_EXT_CONNECTOR_STATUS_TOPIC_TEMPLATE = "connector/v1/nodes/%s/status";
-
+        
+    private final String connectorType;
+	private final String connectorVersion;
     private final String apiKey;
     private final String hostname;
     private final String username;
@@ -49,7 +51,9 @@ public final class LOApiClientParameters {
     private final String extConnectorDataTopicTemplate;
 
     private LOApiClientParameters(LOApiClientParametersBuilder builder) {
-        this.apiKey = builder.apiKey;
+    	this.connectorType =builder.connectorType;
+    	this.connectorVersion = builder.connectorVersion;
+    	this.apiKey = builder.apiKey;
         this.hostname = builder.hostname;
         this.username = builder.username;
         this.extConnectorUsername = builder.extConnectorUsername;
@@ -69,6 +73,14 @@ public final class LOApiClientParameters {
         this.extConnectorDataTopicTemplate = builder.extConnectorDataTopicTemplate;
     }
 
+    public String getConnectorType() {
+		return connectorType;
+	}
+
+	public String getConnectorVersion() {
+		return connectorVersion;
+	}
+	
     public String getApiKey() {
         return apiKey;
     }
@@ -147,6 +159,8 @@ public final class LOApiClientParameters {
 
     public static final class LOApiClientParametersBuilder {
 
+    	private String connectorType;
+		private String connectorVersion;
 		private String apiKey;
         private String hostname = DEFAULT_HOSTNAME;
         private String username = DEFAULT_USERNAME;
@@ -166,6 +180,16 @@ public final class LOApiClientParameters {
         private String extConnectorStatusTopicTemplate = DEFAULT_EXT_CONNECTOR_STATUS_TOPIC_TEMPLATE;
         private String extConnectorDataTopicTemplate = DEFAULT_EXT_CONNECTOR_DATA_TOPIC_TEMPLATE;
 
+        public LOApiClientParametersBuilder connectorType(String type) {
+            this.connectorType = type;
+            return this;
+        }
+        
+        public LOApiClientParametersBuilder connectorVersion(String version) {
+            this.connectorVersion = version;
+            return this;
+        }
+        
         public LOApiClientParametersBuilder apiKey(String apiKey) {
             this.apiKey = apiKey;
             return this;

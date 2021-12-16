@@ -18,18 +18,23 @@ import java.util.UUID;
 public class MqttClientFactoryImpl implements MqttClientFactory {
 
     private static final String SERVER_URI_FORMAT = "ssl://%s:8883";
+    private static final String MQTT_CLIENT_ID_FORMAT = "%s:%s:%s";
     private final String hostname;
 	private final String dataDir;
+	private final String type;
+	private final String version;
 
-    public MqttClientFactoryImpl(String hostname, String dataDir) {
+    public MqttClientFactoryImpl(String hostname, String dataDir, String type, String version) {
         this.hostname = hostname;
 		this.dataDir = dataDir;
+		this.type = type;
+		this.version = version;
     }
 
     @Override
     public IMqttClient getMqttClient() {
         try {
-            return new MqttClient(String.format(SERVER_URI_FORMAT, hostname), UUID.randomUUID().toString(), new MqttDefaultFilePersistence(dataDir));
+            return new MqttClient(String.format(SERVER_URI_FORMAT, hostname), String.format(MQTT_CLIENT_ID_FORMAT, type, version, UUID.randomUUID().toString()), new MqttDefaultFilePersistence(dataDir));
         } catch (MqttException e) {
             throw new LoMqttException(e);
         }

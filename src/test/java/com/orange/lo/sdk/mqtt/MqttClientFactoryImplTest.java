@@ -11,7 +11,10 @@ class MqttClientFactoryImplTest {
     void shouldCorrectlyCreateMqttClient() {
         String hostname = "hostname.com";
         String dataDir = System.getProperty("java.io.tmpdir");
-        MqttClientFactoryImpl factory = new MqttClientFactoryImpl(hostname, dataDir);
+        String type = "connectorType";
+        String version = "1.0";
+        
+        MqttClientFactoryImpl factory = new MqttClientFactoryImpl(hostname, dataDir, type, version);
 
         IMqttClient mqttClient = factory.getMqttClient();
         assertNotNull(mqttClient);
