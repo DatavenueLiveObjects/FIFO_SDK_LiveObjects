@@ -12,13 +12,17 @@ import com.orange.lo.sdk.externalconnector.model.Status;
 import com.orange.lo.sdk.externalconnector.model.Value;
 import org.eclipse.paho.client.mqttv3.IMqttClient;
 import org.eclipse.paho.client.mqttv3.IMqttMessageListener;
+import org.eclipse.paho.client.mqttv3.MqttCallback;
 import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
 import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.AdditionalMatchers;
+import org.mockito.InOrder;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Arrays;
@@ -43,20 +47,26 @@ class DataManagementExtConnectorTest {
 
     @BeforeEach
     void setUp() {
-        parameters = LOApiClientParameters.builder()
-                .apiKey(API_KEY)
-                .build();
-        this.dataManagementExtConnector = new DataManagementExtConnector(parameters, () -> mqttClient);
-        dataManagementExtConnector.connect();
+        
     }
 
     @Test
     void shouldCallConnectFromMqttClientWhenConnectIsCalled() throws MqttException {
+    	parameters = LOApiClientParameters.builder()
+                .apiKey(API_KEY)
+                .build();
+        this.dataManagementExtConnector = new DataManagementExtConnector(parameters, () -> mqttClient);
+        dataManagementExtConnector.connect();
         verify(mqttClient, times(1)).connect(any(MqttConnectOptions.class));
     }
 
     @Test
     void shouldCallDisconnectFromMqttClientWhenDisconnectIsCalled() throws MqttException {
+    	parameters = LOApiClientParameters.builder()
+                .apiKey(API_KEY)
+                .build();
+        this.dataManagementExtConnector = new DataManagementExtConnector(parameters, () -> mqttClient);
+        dataManagementExtConnector.connect();
         dataManagementExtConnector.disconnect();
 
         verify(mqttClient, times(1)).disconnect();
@@ -92,7 +102,12 @@ class DataManagementExtConnectorTest {
         dataManagementExtConnector = new DataManagementExtConnector(parameters, () -> mqttClient);
         dataManagementExtConnector.connect();
 
-        verify(mqttClient, times(1)).subscribe(eq(DEFAULT_EXT_CONNECTOR_COMMAND_REQUEST_TOPIC), eq(DEFAULT_MESSAGE_QOS), any(IMqttMessageListener.class));
+        verify(mqttClient, times(1)).setCallback(any(MqttCallback.class));
+        verify(mqttClient, times(1)).subscribe(
+        		AdditionalMatchers.aryEq(new String[] {DEFAULT_EXT_CONNECTOR_COMMAND_REQUEST_TOPIC}), 
+        		AdditionalMatchers.aryEq(new int[] {DEFAULT_MESSAGE_QOS}), 
+        		any(IMqttMessageListener[].class)
+        	);
     }
 
     @Test
@@ -107,15 +122,24 @@ class DataManagementExtConnectorTest {
         dataManagementExtConnector = new DataManagementExtConnector(parameters, () -> mqttClient);
         dataManagementExtConnector.connect();
 
-        verify(mqttClient, times(1)).subscribe(eq(commandRequestTopic), eq(DEFAULT_MESSAGE_QOS), any(IMqttMessageListener.class));
+        verify(mqttClient, times(1)).setCallback(any(MqttCallback.class));
+        verify(mqttClient, times(1)).subscribe(
+        		AdditionalMatchers.aryEq(new String[] {commandRequestTopic}), 
+        		AdditionalMatchers.aryEq(new int[] {DEFAULT_MESSAGE_QOS}), 
+        		any(IMqttMessageListener[].class)
+        	);        
     }
 
     @Test
     void shouldSendNodeStatusToDefaultStatusTopicAsSelectedNodeIdWhenStatusTopicWasNotChangedInParameters() throws MqttException {
+    	parameters = LOApiClientParameters.builder()
+    			.apiKey(API_KEY)
+    			.build();
         String expectedTopic = String.format(DEFAULT_EXT_CONNECTOR_STATUS_TOPIC_TEMPLATE, EX_CONNECTOR_NODE_ID);
         NodeStatus nodeStatus = getNodeStatus();
         MqttMessage expectedMessage = toMqttMessage(nodeStatus);
-
+        this.dataManagementExtConnector = new DataManagementExtConnector(parameters, () -> mqttClient);
+        dataManagementExtConnector.connect();
         dataManagementExtConnector.sendStatus(EX_CONNECTOR_NODE_ID, nodeStatus);
 
         verify(mqttClient, times(1)).publish(eq(expectedTopic), hasSamePayload(expectedMessage));
@@ -125,14 +149,14 @@ class DataManagementExtConnectorTest {
     @Test
     void shouldSendNodeStatusToChangedStatusTopicAsSelectedNodeIdWhenStatusTopicWasChangedInParameters() throws MqttException {
         String statusTopic = "/%s/new/status/topic";
+        parameters = LOApiClientParameters.builder()
+        		.apiKey(API_KEY)
+        		.extConnectorStatusTopicTemplate(statusTopic)
+        		.build();
         String expectedTopic = String.format(statusTopic, EX_CONNECTOR_NODE_ID);
         NodeStatus nodeStatus = getNodeStatus();
         MqttMessage expectedMessage = toMqttMessage(nodeStatus);
 
-        parameters = LOApiClientParameters.builder()
-                .apiKey(API_KEY)
-                .extConnectorStatusTopicTemplate(statusTopic)
-                .build();
 
         dataManagementExtConnector = new DataManagementExtConnector(parameters, () -> mqttClient);
         dataManagementExtConnector.connect();
@@ -144,10 +168,15 @@ class DataManagementExtConnectorTest {
 
     @Test
     void shouldSendMessageToDefaultDataTopicTemplateAsSelectedNodeIdWhenDataTopicTemplateWasNotChangedInParameters() throws MqttException {
+    	parameters = LOApiClientParameters.builder()
+    			.apiKey(API_KEY)
+    			.build();
         String expectedTopic = String.format(DEFAULT_EXT_CONNECTOR_DATA_TOPIC_TEMPLATE, EX_CONNECTOR_NODE_ID);
         DataMessage dataMessage = getDataMessage();
         MqttMessage expectedMessage = toMqttMessage(dataMessage);
 
+        this.dataManagementExtConnector = new DataManagementExtConnector(parameters, () -> mqttClient);
+        dataManagementExtConnector.connect();
         dataManagementExtConnector.sendMessage(EX_CONNECTOR_NODE_ID, dataMessage);
 
         verify(mqttClient, times(1)).publish(eq(expectedTopic), hasSamePayload(expectedMessage));
@@ -155,15 +184,15 @@ class DataManagementExtConnectorTest {
 
     @Test
     void shouldSendMessageToChangedDataTopicTemplateAsSelectedNodeIdWhenDataTopicTemplateWasChangedInParameters() throws MqttException {
-        String dataTopicTemplate = "/%s/new/data/topic";
+    	String dataTopicTemplate = "/%s/new/data/topic";
+    	parameters = LOApiClientParameters.builder()
+    			.apiKey(API_KEY)
+    			.extConnectorDataTopicTemplate(dataTopicTemplate)
+    			.build();
         String expectedTopic = String.format(dataTopicTemplate, EX_CONNECTOR_NODE_ID);
         DataMessage dataMessage = getDataMessage();
         MqttMessage expectedMessage = toMqttMessage(dataMessage);
 
-        parameters = LOApiClientParameters.builder()
-                .apiKey(API_KEY)
-                .extConnectorDataTopicTemplate(dataTopicTemplate)
-                .build();
 
         dataManagementExtConnector = new DataManagementExtConnector(parameters, () -> mqttClient);
         dataManagementExtConnector.connect();
