@@ -66,7 +66,7 @@ public abstract class AbstractDataManagementMqtt {
         }
     }
 
-    private boolean isConnected() {
+    public boolean isConnected() {
         return mqttClient.isConnected();
     }
 

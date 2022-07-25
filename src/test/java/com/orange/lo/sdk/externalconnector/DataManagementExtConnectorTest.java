@@ -201,6 +201,17 @@ class DataManagementExtConnectorTest {
         verify(mqttClient, times(1)).publish(eq(expectedTopic), hasSamePayload(expectedMessage));
     }
 
+    @Test
+    void shouldCallMqttClientWhenIsCheckingConnectionStatus() {
+        parameters = LOApiClientParameters.builder()
+                .apiKey(API_KEY)
+                .build();
+        this.dataManagementExtConnector = new DataManagementExtConnector(parameters, () -> mqttClient);
+        dataManagementExtConnector.isConnected();
+
+        verify(mqttClient, times(1)).isConnected();
+    }
+
     private NodeStatus getNodeStatus() {
         NodeStatus nodeStatus = new NodeStatus();
         nodeStatus.setStatus(Status.ONLINE);

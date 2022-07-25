@@ -50,4 +50,11 @@ class DataManagementFifoTest {
         verify(mqttClient, times(1)).connect(any(MqttConnectOptions.class));
         verify(mqttClient, times(1)).subscribe(any(String[].class), any(int[].class), any(IMqttMessageListener[].class));
     }
+
+    @Test
+    void shouldCallMqttClientWhenIsCheckingConnectionStatus() {
+        dataManagementFifo.isConnected();
+
+        verify(mqttClient, times(1)).isConnected();
+    }
 }
