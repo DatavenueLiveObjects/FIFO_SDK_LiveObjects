@@ -7,6 +7,7 @@
 
 package com.orange.lo.sdk.mqtt;
 
+import java.lang.invoke.MethodHandles;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -23,9 +24,13 @@ import org.eclipse.paho.client.mqttv3.MqttMessage;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.orange.lo.sdk.LOApiClientParameters;
 import com.orange.lo.sdk.mqtt.exceptions.LoMqttException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 public abstract class AbstractDataManagementMqtt {
+
+    private static final Logger LOG = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
     private final IMqttClient mqttClient;
     private final ObjectMapper objectMapper;
@@ -42,6 +47,7 @@ public abstract class AbstractDataManagementMqtt {
 
     public void disconnect() {
         try {
+            LOG.info("Mqtt client is disconnecting...");
             mqttClient.disconnect();
         } catch (MqttException e) {
             throw new LoMqttException(e);
@@ -51,12 +57,17 @@ public abstract class AbstractDataManagementMqtt {
     public void connect() {
         try {
             if (!mqttClient.isConnected()) {
+                LOG.info("Mqtt client starts connecting...");
                 MqttConnectOptions opts = getMqttConnectionOptions();
                 mqttClient.connect(opts);
             }
         } catch (MqttException e) {
             throw new LoMqttException(e);
         }
+    }
+
+    private boolean isConnected() {
+        return mqttClient.isConnected();
     }
 
     protected MqttConnectOptions getMqttConnectionOptions() {
@@ -81,6 +92,7 @@ public abstract class AbstractDataManagementMqtt {
         try {
             mqttClient.subscribe(topicFilters, qos, messageListeners);
             mqttReconnectCallback.addSubscriptions(topicFilters, qos, messageListeners);
+            LOG.info("Subscribed mqtt topics: {}", (Object) topicFilters);
         } catch (MqttException e) {
             throw new LoMqttException(e);
         }
@@ -115,6 +127,7 @@ public abstract class AbstractDataManagementMqtt {
 		}
 
 		public void connectionLost(Throwable cause) {
+            LOG.error("Connection lost: {}", cause.getMessage());
 		}
 
 		public void messageArrived(String topic, MqttMessage message) throws Exception {
@@ -124,6 +137,7 @@ public abstract class AbstractDataManagementMqtt {
 		}
 
 		public void connectComplete(boolean reconnect, String serverURI) {
+            LOG.error("Connect complete. Reconnect: {}", reconnect);
 			if(reconnect) {
 				subscribe(
 						topicFiltersList.toArray(new String[0]), 
