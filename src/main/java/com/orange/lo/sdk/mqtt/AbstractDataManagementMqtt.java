@@ -9,9 +9,7 @@ package com.orange.lo.sdk.mqtt;
 
 import java.lang.invoke.MethodHandles;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.eclipse.paho.client.mqttv3.IMqttClient;
 import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
@@ -80,7 +78,7 @@ public abstract class AbstractDataManagementMqtt {
         opts.setConnectionTimeout(parameters.getConnectionTimeout());
         opts.setCleanSession(parameters.isCleanSession());
         opts.setMaxInflight(parameters.getMaxInflight());
-                            
+
         return opts;
     }
 
@@ -90,9 +88,30 @@ public abstract class AbstractDataManagementMqtt {
 
     protected void subscribe(String[] topicFilters, int[] qos, IMqttMessageListener[] messageListeners) {
         try {
-            mqttClient.subscribe(topicFilters, qos, messageListeners);
-            mqttReconnectCallback.addSubscriptions(topicFilters, qos, messageListeners);
-            LOG.info("Subscribed mqtt topics: {}", (Object) topicFilters);
+            // To remove duplicates causing the error "This Topic Is Already Subscribed In The Same MQTT Connection"
+            //Helpers
+            List<String> topicFiltersList = new ArrayList<>();
+            List<Integer> qosList = new ArrayList<>();
+            List<IMqttMessageListener> listenersList = new ArrayList<>();
+
+            //Finding unique values from Topics Filters and their qos and listeners
+            for (int i = 0; i < topicFilters.length; i++) {
+                String topicFilter = topicFilters[i];
+                if (!topicFiltersList.contains(topicFilter)) {
+                    topicFiltersList.add(topicFilter);
+                    qosList.add(qos[i] > 2 ? parameters.getMessageQos() : qos[i]);
+                    listenersList.add(messageListeners[i]);
+                }
+            }
+
+            //Transformation to subscription input structures
+            String[] uniqueTopicFilters = topicFiltersList.toArray(new String[0]);
+            int[] qosForUniqueFilters = qosList.stream().mapToInt(i -> i).toArray();
+            IMqttMessageListener[] listenersForUniqueFilters = listenersList.toArray(new IMqttMessageListener[0]);
+
+            mqttClient.subscribe(uniqueTopicFilters, qosForUniqueFilters, listenersForUniqueFilters);
+            mqttReconnectCallback.addSubscriptions(uniqueTopicFilters, qosForUniqueFilters, listenersForUniqueFilters);
+            LOG.info("Subscribed mqtt topics: {}", (Object) uniqueTopicFilters);
         } catch (MqttException e) {
             throw new LoMqttException(e);
         }
@@ -113,18 +132,27 @@ public abstract class AbstractDataManagementMqtt {
     protected LOApiClientParameters getParameters() {
         return parameters;
     }
-    
+
     class MqttReconnectCallback implements MqttCallbackExtended {
 
 		private final List<String>  topicFiltersList = new ArrayList<>();
 		private final List<Integer> qosList = new ArrayList<>();
 		private final List<IMqttMessageListener>  listenersList = new ArrayList<>();
 
-		public void addSubscriptions(String[] topicFilters, int[] qos, IMqttMessageListener[] messageListeners) {
-			topicFiltersList.addAll(Arrays.asList(topicFilters));
-			qosList.addAll(Arrays.stream(qos).boxed().collect(Collectors.toList()));
-			listenersList.addAll(Arrays.asList(messageListeners));
-		}
+        public void addSubscriptions(String[] topicFilters, int[] qos, IMqttMessageListener[] messageListeners) {
+            // To remove duplicates causing the error "This Topic Is Already Subscribed In The Same MQTT Connection"
+            for (int i = 0; i < topicFilters.length; i++) {
+                String topicFilter = topicFilters[i];
+                if (!topicFiltersList.contains(topicFilter)) {
+                    topicFiltersList.add(topicFilter);
+                    qosList.add(qos[i] > 2 ? parameters.getMessageQos() : qos[i]);
+                    listenersList.add(messageListeners[i]);
+                }
+            }
+            LOG.info("MqttReconnectCallback topicFiltersList: {}", topicFiltersList);
+            LOG.info("MqttReconnectCallback qosList: {}", qosList);
+            LOG.info("MqttReconnectCallback listenersList: {}", listenersList);
+        }
 
 		public void connectionLost(Throwable cause) {
             LOG.error("Connection lost: {}", cause.getMessage());
@@ -137,7 +165,7 @@ public abstract class AbstractDataManagementMqtt {
 		}
 
 		public void connectComplete(boolean reconnect, String serverURI) {
-            LOG.error("Connect complete. Reconnect: {}", reconnect);
+            LOG.info("Connect complete. Reconnect: {}", reconnect);
 			if(reconnect) {
 				subscribe(
 						topicFiltersList.toArray(new String[0]), 
