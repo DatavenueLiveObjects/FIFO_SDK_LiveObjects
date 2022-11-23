@@ -10,6 +10,7 @@ package com.orange.lo.sdk.rest.model;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.util.Map;
 import java.util.Objects;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -19,14 +20,14 @@ public class CommandRequest {
     private String connector = null;
 
     @JsonProperty("value")
-    private CommandRequestValue value = null;
+    private Map<String, Object> value = null;
 
     public CommandRequest withConnector(String connector) {
         this.connector = connector;
         return this;
     }
 
-    public CommandRequest withValue(CommandRequestValue value) {
+    public CommandRequest withValue(Map<String, Object> value) {
         this.value = value;
         return this;
     }
@@ -39,11 +40,11 @@ public class CommandRequest {
         this.connector = connector;
     }
 
-    public CommandRequestValue getValue() {
+    public Map<String, Object> getValue() {
         return value;
     }
 
-    public void setValue(CommandRequestValue value) {
+    public void setValue(Map<String, Object> value) {
         this.value = value;
     }
 
