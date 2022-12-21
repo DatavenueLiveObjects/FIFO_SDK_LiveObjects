@@ -105,10 +105,6 @@ public class Command {
         return this;
     }
 
-    public CommandDeliveryStatus getDeliveryStatus() {
-        return commandDeliveryStatus;
-    }
-
     public String getCreated() {
         return created;
     }
