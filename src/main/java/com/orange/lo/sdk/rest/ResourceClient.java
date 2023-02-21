@@ -11,7 +11,9 @@ import java.util.List;
 
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 
@@ -50,15 +52,24 @@ public abstract class ResourceClient {
 	}
 
     protected <T, S> S create(String uri, T body, Class<S> responseType) {
-        ResponseEntity<S> exchange = restTemplate.exchange(uri, HttpMethod.POST, new HttpEntity<T>(body), responseType);
+        HttpEntity<T> requestEntity = gettHttpEntity(body);
+        ResponseEntity<S> exchange = restTemplate.exchange(uri, HttpMethod.POST, requestEntity, responseType);
         return exchange.getBody();
     }
 
     protected <T> void update(String uri, T body) {
-        restTemplate.exchange(uri, HttpMethod.PUT, new HttpEntity<T>(body), Void.class);
+        HttpEntity<T> requestEntity = gettHttpEntity(body);
+        restTemplate.exchange(uri, HttpMethod.PUT, requestEntity, Void.class);
     }
-    
+
     protected <T> void edit(String uri, T body) {
-        restTemplate.exchange(uri, HttpMethod.PATCH, new HttpEntity<T>(body), Void.class);
+        HttpEntity<T> requestEntity = gettHttpEntity(body);
+        restTemplate.exchange(uri, HttpMethod.PATCH, requestEntity, Void.class);
+    }
+
+    private static <T> HttpEntity<T> gettHttpEntity(T body) {
+        HttpHeaders jsonHeaders = new HttpHeaders();
+        jsonHeaders.setContentType(MediaType.APPLICATION_JSON);
+        return new HttpEntity<>(body, jsonHeaders);
     }
 }
