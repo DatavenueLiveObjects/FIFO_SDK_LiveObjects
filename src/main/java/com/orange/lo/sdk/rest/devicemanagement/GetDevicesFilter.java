@@ -15,6 +15,7 @@ public final class GetDevicesFilter implements Filter{
 
     private Integer limit;
     private Integer offset;
+    private String bookmarkId;
     private String sort;
     private String id; // regexp
     private String groupPath;
@@ -36,6 +37,11 @@ public final class GetDevicesFilter implements Filter{
 
     public GetDevicesFilter withOffset(Integer offset) {
         this.offset = offset;
+        return this;
+    }
+    
+    public GetDevicesFilter withBookmarkId(String bookmarkId) {
+        this.bookmarkId = bookmarkId;
         return this;
     }
 
@@ -111,6 +117,10 @@ public final class GetDevicesFilter implements Filter{
     public Integer getOffset() {
         return offset;
     }
+    
+    public String getBookmarkId() {
+        return bookmarkId;
+    }
 
     public String getSort() {
         return sort;
@@ -166,7 +176,7 @@ public final class GetDevicesFilter implements Filter{
 
     @Override
     public String toString() {
-        return "GetDevicesFilter [limit=" + limit + ", offset=" + offset + ", sort=" + sort + ", id=" + id + ", groupPath=" + groupPath + ", groupId=" + groupId + ", name=" + name + ", tags=" + tags + ", connectors=" + connectors + ", interfacesNodeId=" + interfacesNodeId + ", interfacesEnabled=" + interfacesEnabled + ", interfacesStatus=" + interfacesStatus + ", activityStates=" + activityStates + ", filterQuery=" + filterQuery + ", fields=" + fields + "]";
+        return "GetDevicesFilter [limit=" + limit + ", offset=" + offset + ", bookmarkId=" + bookmarkId + ", sort=" + sort + ", id=" + id + ", groupPath=" + groupPath + ", groupId=" + groupId + ", name=" + name + ", tags=" + tags + ", connectors=" + connectors + ", interfacesNodeId=" + interfacesNodeId + ", interfacesEnabled=" + interfacesEnabled + ", interfacesStatus=" + interfacesStatus + ", activityStates=" + activityStates + ", filterQuery=" + filterQuery + ", fields=" + fields + "]";
     }
 
     @Override
@@ -176,6 +186,7 @@ public final class GetDevicesFilter implements Filter{
         GetDevicesFilter that = (GetDevicesFilter) o;
         return Objects.equals(getLimit(), that.getLimit())
                 && Objects.equals(getOffset(), that.getOffset())
+                && Objects.equals(getBookmarkId(), that.getBookmarkId())
                 && Objects.equals(getSort(), that.getSort())
                 && Objects.equals(getId(), that.getId())
                 && Objects.equals(getGroupPath(), that.getGroupPath())
@@ -193,7 +204,7 @@ public final class GetDevicesFilter implements Filter{
 
     @Override
     public int hashCode() {
-        return Objects.hash(getLimit(), getOffset(), getSort(), getId(), getGroupPath(), getGroupId(), getName(),
+        return Objects.hash(getLimit(), getOffset(), getSort(), getBookmarkId(), getId(), getGroupPath(), getGroupId(), getName(),
                 getTags(), getConnectors(), getInterfacesNodeId(), getInterfacesEnabled(), getInterfacesStatus(), getActivityStates(), getFilterQuery(), getFields());
     }
 }
