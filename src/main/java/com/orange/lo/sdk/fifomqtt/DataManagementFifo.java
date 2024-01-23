@@ -32,6 +32,10 @@ public class DataManagementFifo extends AbstractDataManagementMqtt {
         prepareParamsAndSubscribe();
     }
 
+    public void sendAck(int messageId, int qos) {
+        sendACK(messageId, qos);
+    }
+
     private void prepareParamsAndSubscribe() {
         String[] topicsArray = getTopicsArray();
         int[] qosArray = getQosArray(topicsArray.length);
@@ -57,6 +61,6 @@ public class DataManagementFifo extends AbstractDataManagementMqtt {
     }
 
     private void messageArrived(String topic, MqttMessage mqttMessage) {
-        callback.onMessage(mqttMessage.toString());
+        callback.onMessage(mqttMessage.getId(), mqttMessage.toString());
     }
 }
