@@ -144,7 +144,7 @@ class LOApiClientParametersTest {
         LOApiClientParameters parameters = LOApiClientParameters.builder()
                 .apiKey(API_KEY)
                 .topics(TOPICS)
-                .dataManagementMqttCallback(System.out::println)
+                .dataManagementMqttCallback((id, msg) -> System.out.println("Message " + id + " -> " + msg))
                 .build();
 
         assertEquals(TOPICS, parameters.getTopics());
@@ -155,7 +155,7 @@ class LOApiClientParametersTest {
         LOApiClientParameters parameters = LOApiClientParameters.builder()
                 .apiKey(API_KEY)
                 .topics(TOPICS)
-                .dataManagementMqttCallback(System.out::println)
+                .dataManagementMqttCallback((id, msg) -> System.out.println("Message " + id + " -> " + msg))
                 .build();
 
         assertNotNull(parameters.getDataManagementFifoCallback());
@@ -285,7 +285,7 @@ class LOApiClientParametersTest {
     void shouldThrowIllegalArgumentExceptionWhenCallbackIsSetAndTopicsAreNot() {
         LOApiClientParameters.LOApiClientParametersBuilder builder = LOApiClientParameters.builder()
                 .apiKey(API_KEY)
-                .dataManagementMqttCallback(System.out::println);
+                .dataManagementMqttCallback((id, msg) -> System.out.println("Message " + id + " -> " + msg));
 
         IllegalArgumentException illegalArgumentException = assertThrows(IllegalArgumentException.class, builder::build);
         assertEquals("Topics and DataManagementMqttCallback must be set simultaneously", illegalArgumentException.getMessage());

@@ -31,7 +31,7 @@ class DataManagementFifoTest {
         LOApiClientParameters parameters = LOApiClientParameters.builder()
                 .apiKey(API_KEY)
                 .topics(Arrays.asList("topic-01", "topic-02"))
-                .dataManagementMqttCallback(System.out::println)
+                .dataManagementMqttCallback((id, msg) -> System.out.println("Message " + id + " -> " + msg))
                 .build();
         this.dataManagementFifo = new DataManagementFifo(parameters, () -> mqttClient);
     }

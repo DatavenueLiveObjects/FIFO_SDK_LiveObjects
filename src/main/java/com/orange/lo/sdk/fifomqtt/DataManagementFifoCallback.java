@@ -8,5 +8,5 @@
 package com.orange.lo.sdk.fifomqtt;
 
 public interface DataManagementFifoCallback {
-    void onMessage(String message);
+    void onMessage(int messageId, String message);
 }

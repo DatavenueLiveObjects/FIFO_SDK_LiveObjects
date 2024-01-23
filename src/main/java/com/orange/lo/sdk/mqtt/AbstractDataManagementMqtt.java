@@ -56,9 +56,18 @@ public abstract class AbstractDataManagementMqtt {
         try {
             if (!mqttClient.isConnected()) {
                 LOG.info("Mqtt client starts connecting...");
+                if (parameters.isManualAck()) mqttClient.setManualAcks(true);
                 MqttConnectOptions opts = getMqttConnectionOptions();
                 mqttClient.connect(opts);
             }
+        } catch (MqttException e) {
+            throw new LoMqttException(e);
+        }
+    }
+
+    protected void sendACK(int messageId, int qos) {
+        try {
+            mqttClient.messageArrivedComplete(messageId, qos);
         } catch (MqttException e) {
             throw new LoMqttException(e);
         }

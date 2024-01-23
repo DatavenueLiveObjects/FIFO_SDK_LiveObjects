@@ -21,6 +21,7 @@ public final class LOApiClientParameters {
     public static final int DEFAULT_KEEP_ALIVE_INTERVAL = 60;
     public static final int DEFAULT_MAX_INFLIGHT = 10;
     public static final boolean DEFAULT_CLEAN_SESSION = true;
+    public static final boolean DEFAULT_MANUAL_ACK = false;
     public static final int DEFAULT_CONNECTION_TIMEOUT = 30000;
     public static final String DEFAULT_MQTT_PERSISTENCE_DATA_DIR = System.getProperty("user.dir"); 
     public static final String DEFAULT_EXT_CONNECTOR_USER = "connector";
@@ -38,6 +39,7 @@ public final class LOApiClientParameters {
     private final int messageQos;
     private final boolean automaticReconnect;
     private final boolean cleanSession;
+    private final boolean manualAck;
 	private final int keepAliveIntervalSeconds;
     private final int maxInflight;
     private final int connectionTimeout;
@@ -60,6 +62,7 @@ public final class LOApiClientParameters {
         this.messageQos = builder.messageQos;
         this.automaticReconnect = builder.automaticReconnect;
         this.cleanSession = builder.cleanSession;
+        this.manualAck = builder.manualAck;
         this.keepAliveIntervalSeconds = builder.keepAliveIntervalSeconds;
         this.maxInflight = builder.maxInflight;
         this.connectionTimeout = builder.connectionTimeout;
@@ -109,10 +112,14 @@ public final class LOApiClientParameters {
 		return cleanSession;
 	}
 
+    public boolean isManualAck() {
+        return manualAck;
+    }
+
     public int getKeepAliveIntervalSeconds() {
         return keepAliveIntervalSeconds;
     }
-               
+
     public int getMaxInflight() {
     	return maxInflight;
     }
@@ -124,7 +131,7 @@ public final class LOApiClientParameters {
     public String getMqttPersistenceDataDir() {
 		return mqttPersistenceDataDir;
 	}
-    
+
     public List<String> getTopics() {
         return topics;
     }
@@ -168,6 +175,7 @@ public final class LOApiClientParameters {
         private int messageQos = DEFAULT_MESSAGE_QOS;
         private boolean automaticReconnect;
         private boolean cleanSession = DEFAULT_CLEAN_SESSION;
+        private boolean manualAck = DEFAULT_MANUAL_ACK;
         private int keepAliveIntervalSeconds = DEFAULT_KEEP_ALIVE_INTERVAL;
         private int maxInflight = DEFAULT_MAX_INFLIGHT;
         private int connectionTimeout = DEFAULT_CONNECTION_TIMEOUT;
@@ -222,6 +230,11 @@ public final class LOApiClientParameters {
         
         public LOApiClientParametersBuilder cleanSession(boolean cleanSession) {
             this.cleanSession = cleanSession;
+            return this;
+        }
+
+        public LOApiClientParametersBuilder manualAck(boolean manualAck) {
+            this.manualAck = manualAck;
             return this;
         }
 
