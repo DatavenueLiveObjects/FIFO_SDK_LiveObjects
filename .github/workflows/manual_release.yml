@@ -10,7 +10,7 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Create tag by maven-release plugin
-        uses: qcastel/github-actions-maven-release@v1.12.2
+        uses: qcastel/github-actions-maven-release@v1.12.41
         with:
           release-branch-name: "main"
           git-release-bot-name: "auto"
