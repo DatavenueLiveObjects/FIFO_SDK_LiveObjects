@@ -13,16 +13,18 @@ Main features are:
 * retrieving data about groups
 * subscribe and retrieving data from FIFO queues
 
-## Technologies
-* Java 8
-* Spring Web 5.2.9.RELEASE
+## Technologies and libraries
+* Java 17
+* Spring Web 6.1.4
 * Eclipse Paho Client Mqttv3 1.2.5
-* Jackson Databind 2.11.3
+* Jackson Databind 2.16.1
+* Apache HttpClient 5.3.1
+* SLF4J API Module 2.0.12
 
 ## Requirements
 In order to use the x-connector-library you need to have:
 * **Live Objects account with API key** (API key generation is described in the [user guide](https://liveobjects.orange-business.com/cms/app/uploads/EN_User-guide-Live-Objects-4.pdf#%5B%7B%22num%22%3A190%2C%22gen%22%3A0%7D%2C%7B%22name%22%3A%22XYZ%22%7D%2C68%2C574%2C0%5D)),
-* **Java SE Development Kit 8 installed**
+* **Java SE Development Kit 17 installed**
 * **Apache Maven installed**
 
 ## Build
