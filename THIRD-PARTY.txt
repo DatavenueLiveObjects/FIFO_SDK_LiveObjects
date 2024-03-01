@@ -1,8 +1,10 @@
 COMPONENT                               | VERSION       | LICENCE        | URL
 ----------------------------------------------------------------------------------------------------------------------------------------------
-Spring Web                              | 5.2.9.RELEASE | Apache License             | Version 2.0, https://www.apache.org/licenses/LICENSE-2.0
-Jackson Databind                        | 2.11.3        | Apache License             | Version 2.0, https://www.apache.org/licenses/LICENSE-2.0
+Spring Web                              | 6.1.4         | Apache License             | Version 2.0, https://www.apache.org/licenses/LICENSE-2.0
+Jackson Databind                        | 2.16.1        | Apache License             | Version 2.0, https://www.apache.org/licenses/LICENSE-2.0
 Eclipse Paho Client Mqttv3              | 1.2.5         | Eclipse Public License 2.0 | https://www.eclipse.org/legal/epl-v20.html
-Mockito Core                            | 3.1.0         | MIT License                | https://github.com/mockito/mockito/blob/master/LICENSE
-Mockito JUnit Jupiter                   | 3.1.0         | MIT License                | https://github.com/mockito/mockito/blob/master/LICENSE
-JUnit Jupiter API                       | 5.4.2         | Eclipse Public License 2.0 | https://www.eclipse.org/legal/epl-v20.html
+Apache HttpClient                       | 5.3.1         | Apache License             | Version 2.0, https://www.apache.org/licenses/LICENSE-2.0
+SLF4J API Module                        | 2.0.12        | MIT License                | https://github.com/mockito/mockito/blob/master/LICENSE
+Mockito Core                            | 5.10.0        | MIT License                | https://github.com/mockito/mockito/blob/master/LICENSE
+Mockito JUnit Jupiter                   | 5.10.0        | MIT License                | https://github.com/mockito/mockito/blob/master/LICENSE
+JUnit Jupiter API                       | 5.10.2        | Eclipse Public License 2.0 | https://www.eclipse.org/legal/epl-v20.html
