@@ -10,6 +10,7 @@ package com.orange.lo.sdk.mqtt;
 import java.lang.invoke.MethodHandles;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import org.eclipse.paho.client.mqttv3.IMqttClient;
 import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
@@ -36,7 +37,8 @@ public abstract class AbstractDataManagementMqtt {
 	private final MqttReconnectCallback mqttReconnectCallback;
 
     public AbstractDataManagementMqtt(LOApiClientParameters parameters, MqttClientFactory mqttClientFactory) {
-    	this.mqttReconnectCallback = new MqttReconnectCallback();
+        DataManagementReconnectCallback reconnectCallback = parameters.getDataManagementReconnectCallback();
+        this.mqttReconnectCallback = new MqttReconnectCallback(reconnectCallback);
         this.mqttClient = mqttClientFactory.getMqttClient();
         this.mqttClient.setCallback(mqttReconnectCallback);
         this.parameters = parameters;
@@ -147,6 +149,11 @@ public abstract class AbstractDataManagementMqtt {
 		private final List<String>  topicFiltersList = new ArrayList<>();
 		private final List<Integer> qosList = new ArrayList<>();
 		private final List<IMqttMessageListener>  listenersList = new ArrayList<>();
+        private final DataManagementReconnectCallback reconnectCallback;
+
+        public MqttReconnectCallback(DataManagementReconnectCallback reconnectCallback) {
+            this.reconnectCallback = reconnectCallback;
+        }
 
         public void addSubscriptions(String[] topicFilters, int[] qos, IMqttMessageListener[] messageListeners) {
             // To remove duplicates causing the error "This Topic Is Already Subscribed In The Same MQTT Connection"
@@ -163,9 +170,12 @@ public abstract class AbstractDataManagementMqtt {
             LOG.info("MqttReconnectCallback listenersList: {}", listenersList);
         }
 
-		public void connectionLost(Throwable cause) {
+        public void connectionLost(Throwable cause) {
             LOG.error("Connection lost: {}", cause.getMessage());
-		}
+            if (thereIsA(reconnectCallback)) {
+                reconnectCallback.connectionLost(cause);
+            }
+        }
 
 		public void messageArrived(String topic, MqttMessage message) throws Exception {
 		}
@@ -181,6 +191,13 @@ public abstract class AbstractDataManagementMqtt {
 						qosList.stream().mapToInt(Integer::intValue).toArray(),
 						listenersList.toArray(new IMqttMessageListener[0]));
 			}
+            if (thereIsA(reconnectCallback)) {
+                reconnectCallback.connectComplete(reconnect, serverURI);
+            }
 		}
+
+        private boolean thereIsA(Object object) {
+            return Objects.nonNull(object);
+        }
 	}
 }

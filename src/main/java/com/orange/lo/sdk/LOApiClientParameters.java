@@ -9,6 +9,7 @@ package com.orange.lo.sdk;
 
 import com.orange.lo.sdk.externalconnector.DataManagementExtConnectorCommandCallback;
 import com.orange.lo.sdk.fifomqtt.DataManagementFifoCallback;
+import com.orange.lo.sdk.mqtt.DataManagementReconnectCallback;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,6 +48,7 @@ public final class LOApiClientParameters {
 	private final List<String> topics;
     private final DataManagementFifoCallback dataManagementFifoCallback;
     private final DataManagementExtConnectorCommandCallback dataManagementExtConnectorCommandCallback;
+    private final DataManagementReconnectCallback dataManagementReconnectCallback;
     private final String extConnectorCommandRequestTopic;
     private final String extConnectorCommandResponseTopic;
     private final String extConnectorStatusTopicTemplate;
@@ -74,6 +76,7 @@ public final class LOApiClientParameters {
         this.extConnectorCommandResponseTopic = builder.extConnectorCommandResponseTopic;
         this.extConnectorStatusTopicTemplate = builder.extConnectorStatusTopicTemplate;
         this.extConnectorDataTopicTemplate = builder.extConnectorDataTopicTemplate;
+        this.dataManagementReconnectCallback = builder.dataManagementReconnectCallback;
     }
 
     public String getConnectorType() {
@@ -144,6 +147,10 @@ public final class LOApiClientParameters {
         return dataManagementExtConnectorCommandCallback;
     }
 
+    public DataManagementReconnectCallback getDataManagementReconnectCallback() {
+        return dataManagementReconnectCallback;
+    }
+
     public String getExtConnectorCommandResponseTopic() {
         return extConnectorCommandResponseTopic;
     }
@@ -183,6 +190,7 @@ public final class LOApiClientParameters {
         private List<String> topics = new ArrayList<>();
         private DataManagementFifoCallback dataManagementFifoCallback;
         private DataManagementExtConnectorCommandCallback dataManagementExtConnectorCommandCallback;
+        private DataManagementReconnectCallback dataManagementReconnectCallback;
         private String extConnectorCommandRequestTopic = DEFAULT_EXT_CONNECTOR_COMMAND_REQUEST_TOPIC;
         private String extConnectorCommandResponseTopic = DEFAULT_EXT_CONNECTOR_COMMAND_RESPONSE_TOPIC;
         private String extConnectorStatusTopicTemplate = DEFAULT_EXT_CONNECTOR_STATUS_TOPIC_TEMPLATE;
@@ -271,6 +279,12 @@ public final class LOApiClientParameters {
         public LOApiClientParametersBuilder dataManagementExtConnectorCommandCallback(
                 DataManagementExtConnectorCommandCallback dataManagementExtConnectorCommandCallback) {
             this.dataManagementExtConnectorCommandCallback = dataManagementExtConnectorCommandCallback;
+            return this;
+        }
+
+        public LOApiClientParametersBuilder dataManagementReconnectCallback(
+                DataManagementReconnectCallback dataManagementReconnectCallback) {
+            this.dataManagementReconnectCallback = dataManagementReconnectCallback;
             return this;
         }
 
